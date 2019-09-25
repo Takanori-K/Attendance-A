@@ -12,6 +12,8 @@ ja:
           created_at: 作成日
           updated_at: 更新日
           affiliation: 所属
+          basic_time: 基本時間
+          work_time: 勤務時間
           employee_number: 社員番号
           uid: カード番号
           basic_work_time: 基本時間
