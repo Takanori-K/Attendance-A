@@ -2,6 +2,7 @@ ja:
   activerecord:
     models:
       user: ユーザー
+      attendance: 勤怠
     attributes:
         user:
           id: ID
@@ -19,3 +20,9 @@ ja:
           basic_work_time: 基本時間
           designated_work_start_time: 指定勤務開始時間
           designated_work_end_time: 指定勤務終了時間
+        attendance:
+          worked_on: 日付
+          started_at: 出勤時間
+          finished_at: 退勤時間
+          note: 備考
+          user: ユーザーID
