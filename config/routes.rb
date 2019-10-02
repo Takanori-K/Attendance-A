@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   post   '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   
+  get 'users/:id/attendances/:id/edit_over_time', to: 'attendances#edit_over_time', as: :edit_over_time
+  patch 'users/:id/attendances/:id/update_over_time', to: 'attendances#update_over_time', as: :update_over_time
+  
   resources :users do
     member do
       get 'edit_basic_info'
