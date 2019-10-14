@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   
-  before_action :set_user,       only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]      
-  before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
+  before_action :set_user,       only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :working_employee]      
+  before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :working_employee]
   before_action :correct_user,   only: [:edit, :update]
-  before_action :admin_user,     only: [:destroy, :edit_basic_info, :update_basic_info]
+  before_action :admin_user,     only: [:destroy, :edit_basic_info, :update_basic_info, :working_employee]
   before_action :set_one_month,  only: :show
   
   def new
@@ -16,6 +16,15 @@ class UsersController < ApplicationController
   
   def show
     @worked_sum = @attendances.where.not(started_at: nil).count
+    
+    respond_to do |format|
+      format.html do
+      end 
+      format.csv do
+          #csv用の処理を書く
+          send_data render_to_string, filename: "attendance.csv", type: :csv
+      end
+    end
   end
   
   def create
@@ -51,6 +60,10 @@ class UsersController < ApplicationController
       flash[:danger] = "#{@user.name}の更新は失敗しました。<br>" + @user.errors.full_messages.join("<br>")
     end
     redirect_to users_url
+  end
+  
+  def working_employee
+    @working_users = Attendance.where.not(started_at: nil).where(finished_at: nil).where(worked_on: Date.today)
   end
   
   def destroy

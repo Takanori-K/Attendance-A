@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get 'users/:id/attendances/:id/edit_over_time', to: 'attendances#edit_over_time', as: :edit_over_time
   patch 'users/:id/attendances/:id/update_over_time', to: 'attendances#update_over_time', as: :update_over_time
   
+  get 'users/:id/workig_employee', to: 'users#working_employee', as: :working_employee
   resources :users do
     member do
       get 'edit_basic_info'
