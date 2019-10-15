@@ -6,8 +6,8 @@ Rails.application.routes.draw do
   post   '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   
-  get 'users/:id/attendances/:id/edit_over_time', to: 'attendances#edit_over_time', as: :edit_over_time
-  patch 'users/:id/attendances/:id/update_over_time', to: 'attendances#update_over_time', as: :update_over_time
+  get 'users/:id/attendances/:id/edit_overtime_work', to: 'attendances#edit_overtime_work', as: :edit_overtime
+  patch 'users/:id/attendances/:id/update_overtime_work', to: 'attendances#update_overtime_work', as: :update_overtime
   
   get 'users/:id/workig_employee', to: 'users#working_employee', as: :working_employee
   resources :users do
