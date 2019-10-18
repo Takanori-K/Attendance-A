@@ -3,6 +3,9 @@ class Attendance < ApplicationRecord
   
   validates :worked_on, presence: true
   validates :note, length: { maximum: 50 }
+  validates :scheduled_end_time, presence: true
+  validates :business_description, presence: true, length: { maximum: 50 }
+  validates :instructor_sign, presence: true
   
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid

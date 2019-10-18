@@ -8,7 +8,7 @@
     </div>
     <div class="modal-body">
       <%= form_with(model: @attendance, url: update_overtime_path(@user), local: true, method: :patch) do |f| %>
-        <table class="table table-bordered table-condensed">
+        <table class="table table-bordered table-condensed" id ="table-attendances">
           <thead>
             <tr>
               <th>日付</th>
@@ -23,13 +23,16 @@
             <tr>
               <td><%= l(@day, format: :short) %></td>
               <td><%= @youbi %></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td><%= f.time_field :scheduled_end_time, class: "form-control" %></td>
+              <td><%= f.check_box :next_day, {:checked => false}, "true", "false" %></td>
+              <td><%= f.text_field :business_description, class: "form-control" %></td>
+              <td>
+                <%= f.select :instructor_sign, [["#{@superior_1.name}", "#{@superior_1.id}"],["#{@superior_2.name}", "#{@superior_2.id}"]],:include_blank => true, class: "form-control" %>
+              </td>
             </tr>
           </tbody>
         </table>
+        <%= f.submit "変更を送信する", class: "btn btn-block btn-primary" %>
       <% end %>  
     </div>
   </div>

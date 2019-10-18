@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20191015150438) do
     t.datetime "scheduled_end_time"
     t.string "next_day"
     t.string "business_description"
-    t.string "instructir_sign"
+    t.string "instructor_sign"
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 20191015150438) do
     t.string "remember_digest"
     t.boolean "admin", default: false
     t.string "affiliation"
-    t.datetime "basic_time", default: "2019-10-11 23:00:00"
-    t.datetime "work_time", default: "2019-10-11 22:30:00"
+    t.datetime "basic_time", default: "2019-10-18 23:00:00"
+    t.datetime "work_time", default: "2019-10-18 22:30:00"
     t.boolean "superior", default: false
     t.string "employee_number"
     t.index ["email"], name: "index_users_on_email", unique: true

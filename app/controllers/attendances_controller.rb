@@ -1,7 +1,7 @@
 class AttendancesController < ApplicationController
   
-  before_action :set_user,       only: [:edit_one_month, :update_one_month, :edit_overtime_work]
-  before_action :logged_in_user, only: [:update, :edit_one_month,]
+  before_action :set_user,       only: [:edit_one_month, :update_one_month, :edit_overtime_work, :update_overtime_work]
+  before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overtime_work, :update_overtime_work]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_mnth]
   before_action :set_one_month,  only: :edit_one_month
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
@@ -47,15 +47,28 @@ class AttendancesController < ApplicationController
     @day = Date.parse(params[:day])
     @youbi = $days_of_the_week[@day.wday]
     @attendance = @user.attendances.find_by(worked_on: @day)
+    @superior_1 = User.find_by(name: "上長A", superior: true)
+    @superior_2 = User.find_by(name: "上長B", superior: true)
   end
   
   def update_overtime_work
+    @attendance = @user.attendances.find(params[:id])
+    if @attendance.update_attributes(overtime_params)
+      flash[:success] = "残業申請を送信しました。"
+    else
+      flash[:danger] = "#{@user.name}の残業申請の送信は失敗しました。<br>" + @attendance.errors.full_messages.join("<br>")
+    end
+    redirect_to @user
   end
   
   private
     
     def attendances_params
       params.require(:user).permit(attendances: [:started_at, :finished_at, :note])[:attendances]
+    end
+    
+    def overtime_params
+      params.require(:attendance).permit(:scheduled_end_time, :next_day, :business_description, :instructor_sign)
     end
     
      def admin_or_correct_user
