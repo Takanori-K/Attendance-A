@@ -23,4 +23,5 @@ User.create!(name: "一般",
              email: "sample-3@email.com",
              password: "password",
              password_confirmation: "password",
-             employee_number: "4")         
+             employee_number: "4")
+             
