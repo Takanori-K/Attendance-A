@@ -47,6 +47,7 @@ class AttendancesController < ApplicationController
     @day = Date.parse(params[:day])
     @youbi = $days_of_the_week[@day.wday]
     @attendance = @user.attendances.find_by(worked_on: @day)
+    @superiors = User.where.not(id: current_user.id).where(superior: true)
     @superior_1 = User.find_by(name: "上長A", superior: true)
     @superior_2 = User.find_by(name: "上長B", superior: true)
   end
