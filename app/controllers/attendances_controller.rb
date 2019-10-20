@@ -48,8 +48,6 @@ class AttendancesController < ApplicationController
     @youbi = $days_of_the_week[@day.wday]
     @attendance = @user.attendances.find_by(worked_on: @day)
     @superiors = User.where.not(id: current_user.id).where(superior: true)
-    @superior_1 = User.find_by(name: "上長A", superior: true)
-    @superior_2 = User.find_by(name: "上長B", superior: true)
   end
   
   def update_overtime_work
@@ -69,7 +67,7 @@ class AttendancesController < ApplicationController
     end
     
     def overtime_params
-      params.require(:attendance).permit(:scheduled_end_time, :next_day, :business_description, :instructor_sign)
+      params.require(:attendance).permit(:scheduled_end_time , :next_day, :business_description, :instructor_sign)
     end
     
      def admin_or_correct_user
