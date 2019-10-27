@@ -51,13 +51,17 @@ class AttendancesController < ApplicationController
   end
   
   def update_overtime_work
-    @attendance = @user.attendances.find(params[:id])
-    if @attendance.update_attributes(overtime_params)
-      flash[:success] = "残業申請を送信しました。"
+    @user = User.find(params[:attendance][:user_id])
+    @attendance = @user.attendances.find(params[:attendance][:id])
+    # binding.pry
+    if params[:attendance][:scheduled_end_time].blank? || params[:attendance][:instructor_sign].blank?
+      flash[:warning] = "必須箇所が空欄です。"
+      redirect_to @user
     else
-      flash[:danger] = "#{@user.name}の残業申請の送信は失敗しました。<br>" + @attendance.errors.full_messages.join("<br>")
+      @attendance.update_attributes(overtime_params)
+      flash[:success] = "残業申請が完了しました。"
+      redirect_to @user and return
     end
-    redirect_to @user
   end
   
   private
@@ -67,7 +71,7 @@ class AttendancesController < ApplicationController
     end
     
     def overtime_params
-      params.require(:attendance).permit(:scheduled_end_time , :next_day, :business_description, :instructor_sign)
+      params.require(:attendance).permit(:scheduled_end_time, :next_day, :business_description, :instructor_sign)
     end
     
      def admin_or_correct_user

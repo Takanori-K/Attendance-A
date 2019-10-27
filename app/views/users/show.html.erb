@@ -65,7 +65,7 @@
           <% end %>  
         </td>
         <td><%= day.note %></td>
-        <td></td>
+        <td><%= l(day.scheduled_end_time, format: :time) if day.scheduled_end_time.present? %></td>
       </tr>
       <% end %>
     </tbody>
