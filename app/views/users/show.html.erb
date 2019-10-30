@@ -17,6 +17,23 @@
   </table>
 </div>
 
+<% if current_user.superior? %>
+  <% if @notice.blank? %>
+    <h5>【残業申請のお知らせ】</h5>
+  <% end %>  
+  <% @users.each do |user| %>
+    <% attendances = Attendance.where(user_id: user.id) %>
+      <% attendances.each do |at| %>
+        <% if at.instructor_sign.present? && current_user.name == at.instructor_sign %>
+        <div class="overtime-info">
+          <%= link_to "【残業申請のお知らせ】", '#', style: "color:red" %><font color="red"><%= @count %>件の通知があります</font>
+          <% break %>
+        <% end %>
+        </div>
+      <% end %>  
+  <% end %>
+<% end %><br>
+
 <div class="btn-users-show">
   <%= link_to "← 前月へ", user_path(date: @first_day.prev_month), class: "btn btn-primary" %>
   <%= link_to "１ヶ月の勤怠編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
