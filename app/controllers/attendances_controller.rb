@@ -64,6 +64,12 @@ class AttendancesController < ApplicationController
     end
   end
   
+  def edit_overtime_work_info
+  end
+  
+  def update_overtime_work_info
+  end
+  
   private
     
     def attendances_params
