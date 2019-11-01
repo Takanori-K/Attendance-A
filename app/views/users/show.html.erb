@@ -26,7 +26,7 @@
       <% attendances.each do |at| %>
         <% if at.instructor_sign.present? && current_user.name == at.instructor_sign %>
           <div class="overtime-info">
-              <%= link_to "【残業申請のお知らせ】", '#', style: "color:red" %></li>
+              <%= link_to "【残業申請のお知らせ】", edit_overtime_info_path([user_id: user, id: at.id], date: @first_day), remote: true, style: "color:red" %></li>
               <font color="red"><%= @count %>件の通知があります</font></li>
           </div>    
             <% break %>
@@ -105,3 +105,4 @@
 </div>
 
 <div id="edit-overtime-work" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="edit-overtime-work-info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
