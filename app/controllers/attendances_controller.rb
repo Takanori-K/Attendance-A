@@ -65,6 +65,7 @@ class AttendancesController < ApplicationController
   end
   
   def edit_overtime_work_info
+    @users = User.all
   end
   
   def update_overtime_work_info
