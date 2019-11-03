@@ -28,17 +28,17 @@
             </thead>
             <tbody>
               <% attendances.each do |at| %>
-                    <tr>
-                      <td><%= at.worked_on %></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
+                <tr>
+                  <td><%= at.worked_on %></td>
+                  <td><%= $days_of_the_week[at.worked_on.wday] %></td>
+                  <td><%= l(at.scheduled_end_time, format: :time) %></td>
+                  <td><%= l(at.user.designated_work_end_time, format: :time) %></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
               <% end %>
             </tbody>
           </table>
