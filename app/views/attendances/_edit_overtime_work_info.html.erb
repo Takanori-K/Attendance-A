@@ -9,10 +9,9 @@
       <% count = 0 %>
       <% @users.each do |user| %>
       <% count = 1 %>
-        <% attendances = Attendance.find_by(user_id: user.id, instructor_sign: current_user.name) %>
+        <% attendances = Attendance.where(user_id: user.id, instructor_sign: current_user.name) %>
         <% if attendances.present? && count == 1 %>
           <h1 class="modal-title">【<%= user.name %>からの残業申請】</h1>
-        <% end %>
           <table class="table table-bordered table-condensed" id ="table-attendances">
             <thead>
               <tr>
@@ -28,20 +27,23 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+              <% attendances.each do |at| %>
+                    <tr>
+                      <td><%= at.worked_on %></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+              <% end %>
             </tbody>
           </table>
-      <% end %>    
+        <% end %>
+      <% end %> 
     </div>
   </div>
 </div>
