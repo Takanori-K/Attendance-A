@@ -11,7 +11,7 @@
       <% count = 1 %>
         <% attendances = Attendance.where(user_id: user.id, instructor_sign: current_user.name) %>
         <% if attendances.present? && count == 1 %>
-          <h1 class="modal-title">【<%= user.name %>からの残業申請】</h1>
+          <h3 class="modal-title">【<%= user.name %>からの残業申請】</h3>
           <table class="table table-bordered table-condensed" id ="table-attendances">
             <thead>
               <tr>
@@ -38,7 +38,7 @@
                       <%= overwork_times(at.scheduled_end_time, at.user.designated_work_end_time) %>
                     <% end %>  
                   </td>
-                  <td></td>
+                  <td><%= at.business_description %></td>
                   <td></td>
                   <td></td>
                   <td></td>
