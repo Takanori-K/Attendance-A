@@ -33,7 +33,11 @@
                   <td><%= $days_of_the_week[at.worked_on.wday] %></td>
                   <td><%= l(at.scheduled_end_time, format: :time) %></td>
                   <td><%= l(at.user.designated_work_end_time, format: :time) %></td>
-                  <td></td>
+                  <td>
+                    <% if at.scheduled_end_time.present? && at.user.designated_work_end_time.present? %>
+                      <%= overwork_times(at.scheduled_end_time, at.user.designated_work_end_time) %>
+                    <% end %>  
+                  </td>
                   <td></td>
                   <td></td>
                   <td></td>
