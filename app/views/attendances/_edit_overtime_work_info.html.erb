@@ -5,6 +5,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+    <%= form_with(model: @attendance, url: update_overtime_info_path(@user), local: true) do |f| %>
     <div class="modal-body">
       <% count = 0 %>
       <% @users.each do |user| %>
@@ -12,42 +13,48 @@
         <% attendances = Attendance.where(user_id: user.id, instructor_sign: current_user.name) %>
         <% if attendances.present? && count == 1 %>
           <h3 class="modal-title">【<%= user.name %>からの残業申請】</h3>
-          <table class="table table-bordered table-condensed" id ="table-attendances">
-            <thead>
-              <tr>
-                <th>日付</th>
-                <th>曜日</th>
-                <th>終了予定時間</th>
-                <th>指定勤務終了時間</th>
-                <th>時間外時間</th>
-                <th>業務処理内容</th>
-                <th>指示者確認㊞</th>
-                <th>変更</th>
-                <th>勤怠を確認する</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% attendances.each do |at| %>
-                <tr>
-                  <td><%= at.worked_on %></td>
-                  <td><%= $days_of_the_week[at.worked_on.wday] %></td>
-                  <td><%= l(at.scheduled_end_time, format: :time) %></td>
-                  <td><%= l(at.user.designated_work_end_time, format: :time) %></td>
-                  <td>
-                    <% if at.scheduled_end_time.present? && at.user.designated_work_end_time.present? %>
-                      <%= overwork_times(at.scheduled_end_time, at.user.designated_work_end_time) %>
-                    <% end %>  
-                  </td>
-                  <td><%= at.business_description %></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+              <table class="table table-bordered table-condensed" id ="table-attendances">
+                <thead>
+                  <tr>
+                    <th>日付</th>
+                    <th>曜日</th>
+                    <th>終了予定時間</th>
+                    <th>指定勤務終了時間</th>
+                    <th>時間外時間</th>
+                    <th>業務処理内容</th>
+                    <th>指示者確認㊞</th>
+                    <th>変更</th>
+                    <th>勤怠を確認する</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% attendances.each do |at| %>
+                    <tr>
+                      <td><%= at.worked_on %></td>
+                      <td><%= $days_of_the_week[at.worked_on.wday] %></td>
+                      <td><%= l(at.scheduled_end_time, format: :time) %></td>
+                      <td><%= l(at.user.designated_work_end_time, format: :time) %></td>
+                      <td>
+                        <% if at.scheduled_end_time.present? && at.user.designated_work_end_time.present? %>
+                          <%= overwork_times(at.scheduled_end_time, at.user.designated_work_end_time) %>
+                        <% end %>  
+                      </td>
+                      <td><%= at.business_description %></td>
+                      <td>
+                        <%= f.select :overtime_status, Attendance.overtime_statuses.keys.to_a %>
+                      </td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
         <% end %>
-      <% end %> 
+      <% end %>
     </div>
+    <div class="center">
+      <%= f.submit "変更を送信する", class: "btn btn-lg btn-primary" %>
+    </div>  
+    <% end %>
   </div>
 </div>
