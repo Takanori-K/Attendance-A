@@ -43,8 +43,12 @@
                       <td>
                         <%= f.select :overtime_status, Attendance.overtime_statuses.keys.to_a %>
                       </td>
-                      <td></td>
-                      <td></td>
+                      <td>
+                        <%= f.check_box :overtime_change, {:checked => false}, "true", "false" %>
+                      </td>
+                      <td>
+                        <%= link_to "確認", user_path(user, date: @first_day), class: "btn btn-primary" %>
+                      </td>
                     </tr>
                   <% end %>
                 </tbody>
