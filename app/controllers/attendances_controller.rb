@@ -66,11 +66,27 @@ class AttendancesController < ApplicationController
   
   def edit_overtime_work_info
     @user = User.find(params[:user_id])
+    @attendance = Attendance.find(params[:id])
+    @attendances = Attendance.where(instructor_sign: current_user)
     @users = User.all
     @overtime_info = User.all.includes(:attendances)
   end
   
   def update_overtime_work_info
+    @user = User.find(params[:id])
+    ActiveRecord::Base.transaction do
+      overtimes_params.each do |id, item|
+        attendance = Attendance.find(id)
+        if attendance.overtime_change == "true"
+          attendance.update_attributes!(item)
+        end  
+      end
+    end
+    flash[:success] = "残業申請の変更を送信しました。"
+    redirect_to user_url(current_user)
+  rescue ActiveRecord::RecordInvalid
+    flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
+    redirect_to user_url(current_user)
   end
   
   private
@@ -81,6 +97,10 @@ class AttendancesController < ApplicationController
     
     def overtime_params
       params.require(:attendance).permit(:scheduled_end_time, :next_day, :business_description, :instructor_sign)
+    end
+    
+    def overtimes_params
+      params.require(:user).permit(attendances: [:overtime_status, :overtime_change])[:attendances]
     end
     
      def admin_or_correct_user

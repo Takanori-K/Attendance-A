@@ -29,7 +29,7 @@
           <% count += 1 %>
             <% if at.instructor_sign.present? && current_user.name == at.instructor_sign && count == 1 %>
               <div class="overtime-info">
-                  <%= link_to "【残業申請のお知らせ】", edit_overtime_info_path(user_id: user, id: at.id), remote: true, style: "color:red" %>
+                  <%= link_to "【残業申請のお知らせ】", edit_overtime_info_path(user_id: user, id: at.id, date: @first_day), remote: true, style: "color:red" %>
                   <font color="red"><%= @count %>件の通知があります</font>
               </div>    
                <% break %> 
@@ -95,8 +95,8 @@
         <td><%= day.note %></td>
         <td><%= l(day.scheduled_end_time, format: :time) if day.scheduled_end_time.present? %></td>
         <td>
-          <% if day.instructor_sign.present? %>
-            <span>申請中</span>
+          <% if day.instructor_sign.present? && day.overtime_status == approval %>
+            <span><%= day.overtime_status %></span>
           <% end %>  
         </td>
       </tr>

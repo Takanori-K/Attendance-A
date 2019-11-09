@@ -5,7 +5,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <%= form_with(model: @attendance, url: update_overtime_info_path(@user), local: true) do |f| %>
+    <%= form_with(model: @user, url: update_overtime_info_path(date: @first_day), local: true) do |f| %>
     <div class="modal-body">
       <% count = 0 %>
       <% @users.each do |user| %>
@@ -29,27 +29,29 @@
                 </thead>
                 <tbody>
                   <% attendances.each do |at| %>
-                    <tr>
-                      <td><%= at.worked_on %></td>
-                      <td><%= $days_of_the_week[at.worked_on.wday] %></td>
-                      <td><%= l(at.scheduled_end_time, format: :time) %></td>
-                      <td><%= l(at.user.designated_work_end_time, format: :time) %></td>
-                      <td>
-                        <% if at.scheduled_end_time.present? && at.user.designated_work_end_time.present? %>
-                          <%= overwork_times(at.scheduled_end_time, at.user.designated_work_end_time) %>
-                        <% end %>  
-                      </td>
-                      <td><%= at.business_description %></td>
-                      <td>
-                        <%= f.select :overtime_status, Attendance.overtime_statuses.keys.to_a %>
-                      </td>
-                      <td>
-                        <%= f.check_box :overtime_change, {:checked => false}, "true", "false" %>
-                      </td>
-                      <td>
-                        <%= link_to "確認", user_path(user, date: @first_day), class: "btn btn-primary" %>
-                      </td>
-                    </tr>
+                    <%= f.fields_for "attendances[]", at do |attendance| %>
+                      <tr>
+                        <td><%= at.worked_on %></td>
+                        <td><%= $days_of_the_week[at.worked_on.wday] %></td>
+                        <td><%= l(at.scheduled_end_time, format: :time) %></td>
+                        <td><%= l(at.user.designated_work_end_time, format: :time) %></td>
+                        <td>
+                          <% if at.scheduled_end_time.present? && at.user.designated_work_end_time.present? %>
+                            <%= overwork_times(at.scheduled_end_time, at.user.designated_work_end_time) %>
+                          <% end %>  
+                        </td>
+                        <td><%= at.business_description %></td>
+                        <td>
+                          <%= attendance.select :overtime_status, Attendance.overtime_statuses.keys.to_a, class: "form-control" %>
+                        </td>
+                        <td>
+                          <%= attendance.check_box :overtime_change, {:checked => false}, "true", "false" %>
+                        </td>
+                        <td>
+                          <%= link_to "確認", user_path(user, date: @first_day), class: "btn btn-primary" %>
+                        </td>
+                      </tr>
+                    <% end %>  
                   <% end %>
                 </tbody>
               </table>
