@@ -76,8 +76,10 @@
         <td><%= l(day.worked_on, format: :short) %></td>
         <td><%= $days_of_the_week[day.worked_on.wday] %></td>
         <td>
-          <% if btn_text = attendance_state(day) && current_user?(@user) %>
-            <%= link_to "#{btn_text}登録", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+          <% if current_user?(@user) %>
+            <% if btn_text = attendance_state(day) %>
+              <%= link_to "#{btn_text}登録", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+            <% end %>
           <% end %>  
         </td>
         <td>
@@ -95,8 +97,8 @@
         <td><%= day.note %></td>
         <td><%= l(day.scheduled_end_time, format: :time) if day.scheduled_end_time.present? %></td>
         <td>
-          <% if day.instructor_sign.present? && day.overtime_status == approval %>
-            <span><%= day.overtime_status %></span>
+          <% if day.instructor_sign.present? && day.applying? %>
+            <span><%= day.overtime_status %>を承認済み</span>
           <% end %>  
         </td>
       </tr>

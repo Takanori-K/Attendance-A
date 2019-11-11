@@ -73,13 +73,11 @@ class AttendancesController < ApplicationController
   end
   
   def update_overtime_work_info
-    @user = User.find(params[:id])
+    @user = User.find(params[:user_id])
     ActiveRecord::Base.transaction do
       overtimes_params.each do |id, item|
         attendance = Attendance.find(id)
-        if attendance.overtime_change == "true"
-          attendance.update_attributes!(item)
-        end  
+        attendance.update_attributes!(item)
       end
     end
     flash[:success] = "残業申請の変更を送信しました。"
