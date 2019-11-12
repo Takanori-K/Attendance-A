@@ -46,7 +46,7 @@
                           <%= attendance.select :overtime_status, Attendance.overtime_statuses.keys.to_a, class: "form-control" %>
                         </td>
                         <td>
-                          <%= attendance.check_box :change, {}, 'true', 'false' %>
+                          <%= attendance.check_box :agreement %>
                         </td>
                         <td>
                           <%= link_to "確認", user_path(user, date: @first_day), class: "btn btn-primary" %>

@@ -83,7 +83,7 @@ class AttendancesController < ApplicationController
     flash[:success] = "残業申請の変更を送信しました。"
     redirect_to user_url(current_user)
   rescue ActiveRecord::RecordInvalid
-    flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
+    flash[:danger] = "変更にチェックを入れてください。"
     redirect_to user_url(current_user)
   end
   
@@ -98,7 +98,7 @@ class AttendancesController < ApplicationController
     end
     
     def overtimes_params
-      params.require(:user).permit(attendances: [:overtime_status, :overtime_change])[:attendances]
+      params.require(:user).permit(attendances: [:overtime_status, :overtime_change, :agreement])[:attendances]
     end
     
      def admin_or_correct_user
