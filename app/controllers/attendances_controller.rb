@@ -67,9 +67,7 @@ class AttendancesController < ApplicationController
   def edit_overtime_work_info
     @user = User.find(params[:user_id])
     @attendance = Attendance.find(params[:id])
-    @attendances = Attendance.where(instructor_sign: current_user)
     @users = User.all
-    @overtime_info = User.all.includes(:attendances)
   end
   
   def update_overtime_work_info

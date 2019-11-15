@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     @worked_sum = @attendances.where.not(started_at: nil).count
     @users = User.all
     @count = Attendance.where(instructor_sign: current_user.name).count
-    @notice = Attendance.where(instructor_sign: current_user.name)
+    @notice = Attendance.where(instructor_sign: current_user.name).where(overtime_status: 'applying')
     respond_to do |format|
       format.html do
       end 
