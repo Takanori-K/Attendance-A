@@ -27,7 +27,7 @@
       <% attendances = Attendance.where(user_id: user.id) %>
         <% attendances.each do |at| %>
           <% count += 1 %>
-            <% if at.instructor_sign.present? && current_user.name == at.instructor_sign && count == 1 %>
+            <% if at.instructor_sign.present? && current_user.name == at.instructor_sign && count == 1 && at.overtime_status == 0 %>
               <div class="overtime-info">
                   <%= link_to "【残業申請のお知らせ】", edit_overtime_info_path(user_id: user, id: at.id, date: @first_day), remote: true, style: "color:red" %>
                   <font color="red"><%= @count %>件の通知があります</font>
