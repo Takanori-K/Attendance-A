@@ -37,7 +37,11 @@
                         <td><%= l(at.user.designated_work_end_time, format: :time) %></td>
                         <td>
                           <% if at.scheduled_end_time.present? && at.user.designated_work_end_time.present? %>
-                            <%= overwork_times(at.scheduled_end_time, at.user.designated_work_end_time) %>
+                            <% if at.next_day.present? && at.next_day == "true" %>
+                              <%= overwork_times(at.scheduled_end_time.since(1.days), at.user.designated_work_end_time) %>
+                            <% elsif at.next_day.present? && at.next_day == "false" %>  
+                              <%= overwork_times(at.scheduled_end_time, at.user.designated_work_end_time) %>
+                            <% end %>  
                           <% end %>  
                         </td>
                         <td><%= at.business_description %></td>
