@@ -96,7 +96,7 @@ class AttendancesController < ApplicationController
     end
     
     def overtimes_params
-      params.require(:user).permit(attendances: [:overtime_status, :overtime_change])[:attendances]
+      params.require(:user).permit(attendances: [:overtime_status])[:attendances]
     end
     
      def admin_or_correct_user

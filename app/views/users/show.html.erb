@@ -97,8 +97,10 @@
         <td><%= day.note %></td>
         <td><%= l(day.scheduled_end_time, format: :time) if day.scheduled_end_time.present? %></td>
         <td>
-          <% if day.instructor_sign.present? && day.applying? %>
-            <span><%= day.overtime_status %>を承認済み</span>
+          <% if day.instructor_sign.present? %>
+            <span><%= day.overtime_status if day.applying? %></span>
+            <span><%= day.overtime_status if day.approval? %></span>
+            <span><%= day.overtime_status if day.denial? %></span>
           <% end %>  
         </td>
       </tr>
