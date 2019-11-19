@@ -46,7 +46,7 @@
                         </td>
                         <td><%= at.business_description %></td>
                         <td>
-                          <%= attendance.select :overtime_status, Attendance.overtime_statuses.keys.to_a, class: "form-control" %>
+                          <%= attendance.select :overtime_status, Attendance.overtime_statuses_i18n.invert, class: "form-control" %>
                         </td>
                         <td>
                           <%= attendance.check_box :overtime_change %>

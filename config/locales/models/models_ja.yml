@@ -30,3 +30,9 @@ ja:
           next_day: 翌日
           business_description: 業務処理内容
           instructor_sign: 指示者確認㊞
+  enums:
+    attendance:
+      overtime_status:
+        applying: 申請中
+        approval: 承認
+        denial: 否認
