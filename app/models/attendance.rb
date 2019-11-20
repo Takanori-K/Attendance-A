@@ -8,7 +8,7 @@ class Attendance < ApplicationRecord
   
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid
-  validate :overtime_change?
+  #validate :overtime_change?
   
   enum overtime_status: { applying: 0, approval: 1, denial: 2 }
   

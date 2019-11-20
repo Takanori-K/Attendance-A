@@ -72,6 +72,7 @@ class AttendancesController < ApplicationController
   
   def update_overtime_work_info
     @user = User.find(params[:user_id])
+    
     ActiveRecord::Base.transaction do
       overtimes_params.each do |id, item|
         attendance = Attendance.find(id)
@@ -92,11 +93,11 @@ class AttendancesController < ApplicationController
     end
     
     def overtime_params
-      params.require(:attendance).permit(:scheduled_end_time, :next_day, :business_description, :instructor_sign)
+      params.require(:attendance).permit(:scheduled_end_time, :next_day, :business_description, :instructor_sign, :overtime_status, :overtime_change)
     end
     
     def overtimes_params
-      params.require(:user).permit(attendances: [:overtime_status])[:attendances]
+      params.require(:user).permit(attendances: [:overtime_status, :overtime_change])[:attendances]
     end
     
      def admin_or_correct_user

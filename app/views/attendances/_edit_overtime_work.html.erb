@@ -10,6 +10,8 @@
       <%= form_with(model: @attendance, url: update_overtime_path(@user), local: true) do |f| %>
         <%= f.hidden_field :id, :value => @attendance.id %> <!-- attendancesテーブルのidを渡す -->
         <%= f.hidden_field :user_id, :value => @user.id %>
+        <%= f.hidden_field :overtime_status, value: "applying" %>
+        <%= f.hidden_field :overtime_change, value: "0" %>
         <table class="table table-bordered table-condensed" id ="table-attendances">
           <thead>
             <tr>
