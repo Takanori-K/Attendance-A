@@ -72,18 +72,17 @@ class AttendancesController < ApplicationController
   
   def update_overtime_work_info
     @user = User.find(params[:user_id])
-    
     ActiveRecord::Base.transaction do
       overtimes_params.each do |id, item|
         attendance = Attendance.find(id)
         attendance.update_attributes!(item)
       end
     end
-    flash[:success] = "残業申請の変更を送信しました。"
-    redirect_to user_url(current_user)
-  rescue ActiveRecord::RecordInvalid
-    flash[:danger] = "変更にチェックを入れてください。"
-    redirect_to user_url(current_user)
+      flash[:success] = "残業申請の変更を送信しました。"
+      redirect_to user_url(current_user)
+   rescue ActiveRecord::RecordInvalid
+      flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
+      redirect_to user_url(current_user)
   end
   
   private
