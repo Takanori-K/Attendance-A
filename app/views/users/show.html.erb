@@ -99,18 +99,23 @@
         <% end %>
         <td><%= l(day.worked_on, format: :short) %></td>
         <td><%= $days_of_the_week[day.worked_on.wday] %></td>
+        <td><%= day.started_at.to_s(:hour) if day.started_at.present? %></td>
+        <td><%= day.started_at.to_s(:min) if day.started_at.present? %></td>
         <td>
           <% if current_user?(@user) %>
-            <% if btn_text = attendance_state(day) %>
-              <%= link_to "#{btn_text}登録", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+            <% if day.worked_on == Date.today && day.started_at.nil? %>
+              <%= button_to "出社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary" %>
             <% end %>
-          <% end %>  
+          <% end %> 
         </td>
+        <td><%= day.finished_at.to_s(:hour) if day.finished_at.present? %></td>
+        <td><%= day.finished_at.to_s(:min) if day.finished_at.present? %></td>
         <td>
-          <%= l(day.started_at, format: :time) if day.started_at.present? %>
-        </td>
-        <td>
-          <%= l(day.finished_at, format: :time) if day.started_at.present? && day.finished_at.present? %>
+          <% if current_user?(@user) %>
+            <% if day.worked_on == Date.today && day.started_at.present? && day.finished_at.nil? %>
+              <%= button_to "退社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary" %>
+            <% end %>
+          <% end %>
         </td>
         <td>
           <% if day.started_at.present? && day.finished_at.present? %>
@@ -119,7 +124,18 @@
           <% end %>  
         </td>
         <td><%= day.note %></td>
-        <td><%= l(day.scheduled_end_time, format: :time) if day.scheduled_end_time.present? %></td>
+        <td><%= day.scheduled_end_time.to_s(:hour) if day.scheduled_end_time.present? %></td>
+        <td><%= day.scheduled_end_time.to_s(:min) if day.scheduled_end_time.present? %></td>
+        <td>
+          <% if day.scheduled_end_time.present? && day.user.designated_work_end_time.present? %>
+            <% if day.next_day.present? && day.next_day == "true" %>
+              <%= overwork_times_tomorrow(day.scheduled_end_time, day.user.designated_work_end_time) %>
+            <% elsif day.next_day.present? && day.next_day == "false" %>  
+              <%= overwork_times(day.scheduled_end_time, day.user.designated_work_end_time) %>
+            <% end %>  
+          <% end %>
+        </td>
+        <td><%= day.business_description %></td>
         <td>
           <% if day.instructor_sign.present? %>
             <span><%= day.overtime_status if day.applying? %></span>
