@@ -31,7 +31,7 @@
               <td><%= f.check_box :next_day, {:checked => false}, "true", "false" %></td>
               <td><%= f.text_field :business_description, class: "form-control" %></td>
               <td>
-                <%= f.select :instructor_sign, @superiors.pluck(:name), :include_blank => true, class: "form-control" %>
+                <%= f.select :instructor_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %>
               </td>
             </tr>
           </tbody>

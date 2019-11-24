@@ -86,6 +86,9 @@ class AttendancesController < ApplicationController
       redirect_to user_url(current_user)
   end
   
+  def update_one_month_info
+  end
+  
   private
     
     def attendances_params
