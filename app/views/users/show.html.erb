@@ -1,4 +1,5 @@
 <% provide(:title, @user.name) %>
+<%= form_with(model: @attendance, url: update_month_info_path(@user), local: true, method: :patch) do |f| %>
 <div>
   <table class="table table-bordered table-condensed user-table">
     <tr>
@@ -59,7 +60,6 @@
   <%= link_to "CSV出力", user_path(format: :csv), class: "btn btn-primary" %>
 <% end %>
 <div>
-  <%= form_with(model: @user, url: update_month_info_path(date: @first_day), local: true) do |f| %>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
     <thead>
       <tr> <!--rowspan:縦結合、colspan：横結合-->
@@ -159,7 +159,7 @@
         <td colspan = "5" rowspan = "3"></td>
         <td rowspan = "3">
           所属長承認<br>
-          <%= f.select :instructor_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %><br>
+          <%= f.select :one_month_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %><br>
           <%= f.submit "申請", class: "btn btn-block btn-primary" %>
         </td>
       </tr>
@@ -170,8 +170,8 @@
       </tr>
     </tfoot>
   </table>
-  <% end %>
 </div>
+<% end %>
 
 <div id="edit-overtime-work" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div id="edit-overtime-work-info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

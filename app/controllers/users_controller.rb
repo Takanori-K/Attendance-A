@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   end
   
   def show
+    @attendance = Attendance.find(params[:id])
     @worked_sum = @attendances.where.not(started_at: nil).count
     @users = User.all
     @count = Attendance.where(instructor_sign: current_user.name, overtime_status: 0).count
