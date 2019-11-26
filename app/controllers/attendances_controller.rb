@@ -81,7 +81,7 @@ class AttendancesController < ApplicationController
     end
       flash[:success] = "残業申請の変更を送信しました。"
       redirect_to user_url(current_user)
-   rescue ActiveRecord::RecordInvalid
+  rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更にチェックを入れてください。"
       redirect_to user_url(current_user)
   end
@@ -97,7 +97,12 @@ class AttendancesController < ApplicationController
       flash[:success] = "一ヵ月分の勤怠承認を申請しました。"
       redirect_to @user and return
     end
-    
+  end
+  
+  def edit_month_work_info
+  end
+  
+  def update_month_work_info
   end
   
   private

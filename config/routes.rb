@@ -10,11 +10,12 @@ Rails.application.routes.draw do
   patch 'users/:id/attendances/:id/update_overtime_work', to: 'attendances#update_overtime_work', as: :update_overtime
   
   get 'users/:user_id/attendances/:id/edit_overtime_work_info', to: 'attendances#edit_overtime_work_info', as: :edit_overtime_info
-  patch 'users/:user_id/attendances/:id/update_overtime_work_update', to: 'attendances#update_overtime_work_info', as: :update_overtime_info
+  patch 'users/:user_id/attendances/:id/update_overtime_work_info', to: 'attendances#update_overtime_work_info', as: :update_overtime_info
   
   patch 'users/:id/attendances/:id/update_one_month_info', to: 'attendances#update_one_month_info', as: :update_month_info
-  get 'users/:user_id/attendances/:id/edit_month_work_info', to: 'attendances#edit_month_work_info', as: :edit_month_info
-  patch 'users/:user_id/attendances/:id/update_month_work_info', to: 'attendances#update_month_work_info', as: :update_month_info
+  
+  get 'users/:user_id/attendances/:id/edit_month_work_info', to: 'attendances#edit_month_work_info', as: :edit_month_work_info
+  patch 'users/:user_id/attendances/:id/update_month_work_info', to: 'attendances#update_month_work_info', as: :update_month_work_info
   
   get 'users/:id/workig_employee', to: 'users#working_employee', as: :working_employee
   resources :users do
