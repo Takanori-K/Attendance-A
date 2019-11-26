@@ -1,5 +1,8 @@
 <% provide(:title, @user.name) %>
 <%= form_with(model: @attendance, url: update_month_info_path(@user), local: true, method: :patch) do |f| %>
+  <%= f.hidden_field :id, :value => @attendance.id %> <!-- attendancesテーブルのidを渡す -->
+  <%= f.hidden_field :user_id, :value => @user.id %>
+  <%= f.hidden_field :worked_month, :value => @first_day %>
 <div>
   <table class="table table-bordered table-condensed user-table">
     <tr>
@@ -105,7 +108,7 @@
         <td>
           <% if current_user?(@user) %>
             <% if day.worked_on == Date.today && day.started_at.nil? %>
-              <%= button_to "出社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary" %>
+              <%= link_to "出社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary" %>
             <% end %>
           <% end %> 
         </td>
@@ -114,7 +117,7 @@
         <td>
           <% if current_user?(@user) %>
             <% if day.worked_on == Date.today && day.started_at.present? && day.finished_at.nil? %>
-              <%= button_to "退社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary" %>
+              <%= link_to "退社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary" %>
             <% end %>
           <% end %>
         </td>
@@ -139,9 +142,15 @@
         <td><%= day.business_description %></td>
         <td>
           <% if day.instructor_sign.present? %>
-            <span><%= day.overtime_status if day.applying? %></span>
-            <span><%= day.overtime_status if day.approval? %></span>
-            <span><%= day.overtime_status if day.denial? %></span>
+            <% if day.applying? %>
+              <span>残業申請中</span>
+            <% end %>  
+            <% if day.approval? %>
+              <span>残業承認済み</span>
+            <% end %>
+            <% if day.denial? %>
+              <span>残業否認</span>
+            <% end %>  
           <% end %>  
         </td>
       </tr>

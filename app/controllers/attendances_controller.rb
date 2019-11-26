@@ -56,7 +56,7 @@ class AttendancesController < ApplicationController
     @attendance = @user.attendances.find(params[:attendance][:id])
     # binding.pry
     if params[:attendance][:scheduled_end_time].blank? || params[:attendance][:instructor_sign].blank?
-      flash[:warning] = "必須箇所が空欄です。"
+      flash[:danger] = "必須箇所が空欄です。"
       redirect_to @user
     else
       @attendance.update_attributes(overtime_params)
@@ -87,8 +87,17 @@ class AttendancesController < ApplicationController
   end
   
   def update_one_month_info
-    @user = User.find(params[:id])
-    @attendance = @user.attendances.find(params[:id])
+    @user = User.find(params[:attendance][:user_id])
+    @attendance = @user.attendances.find(params[:attendance][:id])
+    if params[:attendance][:one_month_sign].blank?
+      flash[:danger] = "所属長を選択してください。"
+      redirect_to @user
+    else
+      @attendance.update_attributes(month_params)
+      flash[:success] = "一ヵ月分の勤怠承認を申請しました。"
+      redirect_to @user and return
+    end
+    
   end
   
   private
@@ -103,6 +112,10 @@ class AttendancesController < ApplicationController
     
     def overtimes_params
       params.require(:user).permit(attendances: [:overtime_status, :overtime_change])[:attendances]
+    end
+    
+    def month_params
+      params.require(:attendance).permit(:one_month_sign, :worked_month)
     end
     
      def admin_or_correct_user
