@@ -36,6 +36,9 @@
 
 <% if current_user?(@user) %>
   <% if current_user.superior? %>
+    <% if @month.blank? %>
+      <h4>【所属長承認申請のお知らせ】</h4>
+    <% end %>  
     <% if @notice.blank? %>
       <h4>【残業申請のお知らせ】</h4><br>
     <% end %>
@@ -44,6 +47,11 @@
       <% attendances = Attendance.where(user_id: user.id) %>
         <% attendances.each do |at| %>
           <% count += 1 %>
+            <% if @month.present? && count == 1 %>
+              <div class="month-info">
+                <%= link_to "【所属長承認申請のお知らせ】", '#' %>
+              </div>
+            <% end %>    
             <% if @notice.present? && count == 1 %>
               <div class="overtime-info">
                   <%= link_to "【残業申請のお知らせ】", edit_overtime_info_path(user_id: user, id: at.id, date: @first_day), remote: true, style: "color:red" %>

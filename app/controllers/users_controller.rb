@@ -22,6 +22,7 @@ class UsersController < ApplicationController
     @count = Attendance.where(instructor_sign: current_user.name, overtime_status: 0).count
     @notice = Attendance.where(instructor_sign: current_user.name).where(overtime_status: 0)
     @superiors = User.where.not(id: current_user.id).where(superior: true)
+    @month = Attendance.where(one_month_sign: current_user.name)
    
     respond_to do |format|
       format.html do
