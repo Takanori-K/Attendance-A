@@ -16,11 +16,11 @@
         <% end %>  
         </td>
       <td>
-        指定勤務開始時間<br>
-        指定勤務終了時間
+        指定勤務開始時間：<%= format_basic_info(@user.designated_work_start_time) %><br>
+        指定勤務終了時間：<%= format_basic_info(@user.designated_work_end_time) %>
       </td>
-      <td colspan="3"><br>基本時間<%= format_basic_info(@user.basic_time) %></td>
-      <td><br>初日<%= l(@first_day, format: :short) %></td>
+      <td colspan="3"><br>基本時間：<%= format_basic_info(@user.basic_time) %></td>
+      <td><br>初日：<%= l(@first_day, format: :short) %></td>
     </tr>
     
     <tr>
@@ -29,7 +29,7 @@
       <td>コード</td>
       <td></td>
       <td>出勤日数：<%= @worked_sum %>日</td>
-      <td>締め<%= l(@last_day, format: :short) %></td>
+      <td>締め：<%= l(@last_day, format: :short) %></td>
     </tr>
   </table>
 </div>
@@ -158,13 +158,10 @@
     </tbody>
     <tfoot>
       <tr>
+        <td rowspan = "3"></td>
         <td colspan = "2">累計日数</td>
-        <td colspan = "2">総合勤務時間</td>
-        <td colspan = "2">累計在社時間</td>
-        <td rowspan = "2"></td>
-        <td rowspan = "2"></td>
-        <td rowspan = "2"></td>
-        <td rowspan = "2"></td>
+        <td colspan = "6">総合勤務時間</td>
+        <td>累計在社時間</td>
         <td colspan = "5" rowspan = "3"></td>
         <td rowspan = "3">
           所属長承認<br>
@@ -174,8 +171,8 @@
       </tr>
       <tr>
         <td colspan = "2"><%= @attendances.count %></td>
-        <td colspan = "2"><%= format_basic_info(@user.work_time).to_f * @worked_sum %></td>
-        <td colspan = "2"><%= format("%.2f", @total_working_times.to_f) %></td>
+        <td colspan = "6"><%= format_basic_info(@user.work_time).to_f * @worked_sum %></td>
+        <td><%= format("%.2f", @total_working_times.to_f) %></td>
       </tr>
     </tfoot>
   </table>
