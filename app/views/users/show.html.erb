@@ -40,7 +40,8 @@
       <h4>【所属長承認申請のお知らせ】</h4>
     <% else %>
       <div class="month-info">
-        <%= link_to "【所属長承認申請のお知らせ】", '#' %>
+        <%= link_to "【所属長承認申請のお知らせ】", edit_month_work_info_path(user_id: @user.id, id: @attendance.id, date: @first_day), remote: true, style: "color:red" %>
+        <font color="red"><%= @count %>件の通知があります</font>
       </div>
     <% end %>  
     <% if @notice.blank? %>
@@ -188,3 +189,4 @@
 
 <div id="edit-overtime-work" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div id="edit-overtime-work-info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="edit-month-work-info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
