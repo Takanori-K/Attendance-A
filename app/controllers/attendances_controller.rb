@@ -100,9 +100,13 @@ class AttendancesController < ApplicationController
   end
   
   def edit_month_work_info
+    @users = User.all
+    @user = User.find(params[:user_id])
+    @attendance = Attendance.find(params[:id])
   end
   
   def update_month_work_info
+    @user = User.find(params[:user_id])
   end
   
   private

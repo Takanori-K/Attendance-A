@@ -5,7 +5,43 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+    <%= form_with(model: @user, url: update_month_work_info_path(date: @first_day), local: true) do |f| %>
     <div class="modal-body">
+      <% count = 0 %>
+      <% @users.each do |user| %>
+      <% count = 1 %>
+        <% attendances = Attendance.where(user_id: user.id, one_month_sign: current_user.name, month_status: 0) %>
+          <% if attendances.present? && count == 1 %>
+            <h3 class="modal-title">【<%= user.name %>からの１ヵ月分勤怠申請】</h3>
+              <table class="table table-bordered table-condensed" id ="table-attendances">
+                <thead>
+                  <tr>
+                    <th>月</th>
+                    <th>指示者確認㊞</th>
+                    <th>変更</th>
+                    <th>勤怠を確認する</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% attendances.each do |at| %>
+                    <%= f.fields_for "attendances[]", at do |attendance| %>
+                      <tr>
+                        <td><%= l(at.worked_month, format: :middle) %></td>
+                        <td>
+                          <%= attendance.select :month_status, Attendance.overtime_statuses_i18n.invert, {}, {class: "form-control"} %>
+                        </td>
+                        <td><%= attendance.check_box :overtime_change %></td>
+                        <td>
+                          <%= link_to "確認", user_path(user, date: @first_day), class: "btn btn-primary" %>
+                        </td>
+                      </tr>
+                    <% end %>  
+                  <% end %>    
+                </tbody>
+              </table>
+          <% end %>
+      <% end %>
+    <% end %>  
     </div>
   </div>
 </div>

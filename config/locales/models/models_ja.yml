@@ -36,3 +36,7 @@ ja:
         applying: 申請中
         approval: 承認
         denial: 否認
+      month_status:
+        month_applying: 申請中
+        month_approval: 承認
+        month_denial: 否認
