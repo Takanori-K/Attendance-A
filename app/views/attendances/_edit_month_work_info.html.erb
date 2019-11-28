@@ -30,7 +30,7 @@
                         <td>
                           <%= attendance.select :month_status, Attendance.overtime_statuses_i18n.invert, {}, {class: "form-control"} %>
                         </td>
-                        <td><%= attendance.check_box :overtime_change %></td>
+                        <td><%= attendance.check_box :month_change %></td>
                         <td>
                           <%= link_to "確認", user_path(user, date: @first_day), class: "btn btn-primary" %>
                         </td>

@@ -26,7 +26,15 @@
           <tbody>
             <tr>
               <td><%= l(@day, format: :short) %></td>
-              <td><%= @youbi %></td>
+              <td>
+                <% if @day.wday == 0 %>
+                  <font color="Red"><%= @youbi %></font>
+                <% elsif @day.wday == 6 %>
+                  <font color="Blue"><%= @youbi %></font>
+                <% else %>  
+                  <%= @youbi %>
+                <% end %>  
+              </td>
               <td><%= f.time_field :scheduled_end_time, class: "form-control" %></td>
               <td><%= f.check_box :next_day, {:checked => false}, "true", "false" %></td>
               <td><%= f.text_field :business_description, class: "form-control" %></td>

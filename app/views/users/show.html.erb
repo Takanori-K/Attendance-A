@@ -110,7 +110,15 @@
           <% end %>  
         </td>
         <td><%= l(day.worked_on, format: :short) %></td>
-        <td><%= $days_of_the_week[day.worked_on.wday] %></td>
+        <td>
+          <% if day.worked_on.wday == 0 %>
+            <font color="Red"><%= $days_of_the_week[day.worked_on.wday] %></font>
+          <% elsif day.worked_on.wday == 6 %>
+            <font color="Blue"><%= $days_of_the_week[day.worked_on.wday] %></font>
+          <% else %>
+            <%= $days_of_the_week[day.worked_on.wday] %>
+          <% end %> 
+        </td>
         <td><%= day.started_at.to_s(:hour) if day.started_at.present? %></td>
         <td><%= day.started_at.to_s(:min) if day.started_at.present? %></td>
         <td>
@@ -136,10 +144,10 @@
           <% end %>  
         </td>
         <td><%= day.note %></td>
-        <td><%= day.scheduled_end_time.to_s(:hour) if day.scheduled_end_time.present? %></td>
-        <td><%= day.scheduled_end_time.to_s(:min) if day.scheduled_end_time.present? %></td>
+        <td><%= day.scheduled_end_time.to_s(:hour) if day.scheduled_end_time.present? && day.approval? %></td>
+        <td><%= day.scheduled_end_time.to_s(:min) if day.scheduled_end_time.present? && day.approval? %></td>
         <td>
-          <% if day.scheduled_end_time.present? && day.user.designated_work_end_time.present? %>
+          <% if day.scheduled_end_time.present? && day.user.designated_work_end_time.present? && day.approval? %>
             <% if day.next_day.present? && day.next_day == "true" %>
               <%= overwork_times_tomorrow(day.scheduled_end_time, day.user.designated_work_end_time) %>
             <% elsif day.next_day.present? && day.next_day == "false" %>  
@@ -147,7 +155,7 @@
             <% end %>  
           <% end %>
         </td>
-        <td><%= day.business_description %></td>
+        <td><%= day.business_description if day.approval? %></td>
         <td>
           <% if day.instructor_sign.present? %>
             <% if day.applying? %>
@@ -174,8 +182,12 @@
         <td rowspan = "3">
           <% if @superior.present? %>
             所属長承認　<%= @superior.one_month_sign %>へ申請中<br>
+          <% elsif @superior.present? && @superior.month_status == 1 %>
+            所属長承認　<%= @superior.one_month_sign %>から承認済み<br>
+          <% elsif @superior.present? && @superior.month_status == 2 %>
+            所属長承認　<%= @superior.one_month_sign %>から否認済み<br>
           <% else %>
-            所属長承認<br>
+            所属長承認　未<br>
           <% end %>
             
           <% if current_user?(@user) %>
