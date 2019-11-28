@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   end
   
   def show
-    @superior = Attendance.find_by(user_id: @user.id, worked_month: @first_day, month_status: 0)
+    @superior = Attendance.find_by(user_id: @user.id)
     @attendance = Attendance.find(params[:id])
     @worked_sum = @attendances.where.not(started_at: nil).count
     @users = User.all
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     @count = Attendance.where(instructor_sign: current_user.name, overtime_status: 0).count
     @notice = Attendance.where(instructor_sign: current_user.name).where(overtime_status: 0)
     @superiors = User.where.not(id: current_user.id).where(superior: true)
-    @month = Attendance.where(one_month_sign: current_user.name)
+    @month = Attendance.where(one_month_sign: current_user.name).where(month_status: 0)
     @month_count = Attendance.where(one_month_sign: current_user.name, month_status: 0).count
    
     respond_to do |format|

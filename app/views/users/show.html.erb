@@ -3,6 +3,7 @@
   <%= f.hidden_field :id, :value => @attendance.id %> <!-- attendancesテーブルのidを渡す -->
   <%= f.hidden_field :user_id, :value => @user.id %>
   <%= f.hidden_field :worked_month, :value => @first_day %>
+  <%= f.hidden_field :month_change, value: "false" %>
 <div>
   <table class="table table-bordered table-condensed user-table">
     <tr>
@@ -180,15 +181,20 @@
         <td>累計在社時間</td>
         <td colspan = "5" rowspan = "3"></td>
         <td rowspan = "3">
-          <% if @superior.present? %>
-            所属長承認　<%= @superior.one_month_sign %>へ申請中<br>
-          <% elsif @superior.present? && @superior.month_status == 1 %>
-            所属長承認　<%= @superior.one_month_sign %>から承認済み<br>
-          <% elsif @superior.present? && @superior.month_status == 2 %>
-            所属長承認　<%= @superior.one_month_sign %>から否認済み<br>
-          <% else %>
+          <% if @superior.one_month_sign.present? && @superior.worked_month == @first_day %>
+            <% if @superior.month_applying? %>
+              所属長承認　<%= @superior.one_month_sign %>へ申請中<br>
+            <% end %>  
+            <% if @superior.month_approval? %>
+              所属長承認　<%= @superior.one_month_sign %>から承認済み<br>
+            <% end %>  
+            <% if @superior.month_denial? %>
+              所属長承認　<%= @superior.one_month_sign %>から否認済み<br>
+            <% end %>
+          <% end %>  
+          <% unless @superior.worked_month == @first_day %>
             所属長承認　未<br>
-          <% end %>
+          <% end %>  
             
           <% if current_user?(@user) %>
             <%= f.select :one_month_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %><br>

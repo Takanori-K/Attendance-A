@@ -9,6 +9,7 @@ class Attendance < ApplicationRecord
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid
   validate :overtime_change?
+  validate :month_request_change?
   
   enum overtime_status: { applying: 0, approval: 1, denial: 2 }
   enum month_status: { month_applying: 0, month_approval: 1, month_denial: 2 }
@@ -26,6 +27,12 @@ class Attendance < ApplicationRecord
   def overtime_change?
     if overtime_change.present? && overtime_change == "0"
       errors.add(:overtime_change, "チェックを入れてください。")
+    end
+  end
+  
+  def month_request_change?
+    if month_change.present? && month_change == "0"
+      errors.add(:month_change, "チェックを入れてください。")
     end
   end
   

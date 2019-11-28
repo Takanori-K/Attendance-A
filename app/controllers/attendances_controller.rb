@@ -107,6 +107,17 @@ class AttendancesController < ApplicationController
   
   def update_month_work_info
     @user = User.find(params[:user_id])
+    ActiveRecord::Base.transaction do
+      month_request_params.each do |id, item|
+        attendance = Attendance.find(id)
+        attendance.update_attributes!(item)
+      end
+    end
+      flash[:success] = "１ヵ月分の勤怠変更を送信しました。"
+      redirect_to user_url(current_user)
+  rescue ActiveRecord::RecordInvalid
+      flash[:danger] = "変更にチェックを入れてください。"
+      redirect_to user_url(current_user)
   end
   
   private
@@ -125,6 +136,10 @@ class AttendancesController < ApplicationController
     
     def month_params
       params.require(:attendance).permit(:one_month_sign, :worked_month)
+    end
+    
+    def month_request_params
+      params.require(:user).permit(attendances: [:month_status, :month_change])[:attendances]
     end
     
      def admin_or_correct_user
