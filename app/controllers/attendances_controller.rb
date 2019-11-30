@@ -120,6 +120,12 @@ class AttendancesController < ApplicationController
       redirect_to user_url(current_user)
   end
   
+  def edit_worked_info
+  end
+  
+  def update_worked_info
+  end
+  
   private
     
     def attendances_params
