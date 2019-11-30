@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   get 'users/:user_id/attendances/:id/edit_month_work_info', to: 'attendances#edit_month_work_info', as: :edit_month_work_info
   patch 'users/:user_id/attendances/:id/update_month_work_info', to: 'attendances#update_month_work_info', as: :update_month_work_info
   
+  get 'users/:user_id/attendances/:id/edit_worked_info', to: 'attendances#edit_worked_info', as: :edit_worked_info
+  patch 'users/:user_id/attendances/:id/update_worked_info', to: 'attendances#update_worked_info', as: :update_worked_info
+  
   get 'users/:id/workig_employee', to: 'users#working_employee', as: :working_employee
   resources :users do
     member do
