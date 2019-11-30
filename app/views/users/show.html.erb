@@ -160,10 +160,10 @@
         <td>
           <% if day.instructor_sign.present? %>
             <% if day.applying? %>
-              <span>残業申請中</span>
+              <span><%= day.instructor_sign %>へ残業申請中</span>
             <% end %>  
             <% if day.approval? %>
-              <span>残業承認済み</span>
+              <span>残業承認済</span>
             <% end %>
             <% if day.denial? %>
               <span>残業否認</span>
