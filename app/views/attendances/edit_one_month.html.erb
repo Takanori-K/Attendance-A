@@ -41,7 +41,7 @@
                 <% if day.started_at.present? && day.finished_at.present? %>
                   <% if day.next_day.present? && day.next_day == "true" %>
                     <%= working_times_tomorrow(day.started_at, day.finished_at) %>
-                  <% elsif day.next_day.blank? || day.next_day.present? && day.next_day == "false" %>
+                  <% elsif day.next_day.present? && day.next_day == "false" %>
                     <%= working_times(day.started_at, day.finished_at) %>
                   <% end %>
                 <% end %>  

@@ -22,7 +22,7 @@ class Attendance < ApplicationRecord
   end
   
   def started_at_than_finished_at_fast_if_invalid
-    if started_at.present? && finished_at.present?
+    if started_at.present? && finished_at.present? && next_day.present? && next_day == "false"
       errors.add(:started_at, "より早い時間は無効です。") if started_at > finished_at
     end
   end
@@ -40,19 +40,21 @@ class Attendance < ApplicationRecord
   end
   
   def worked_request_sign_and_started_at_than_finished_at_fast_if_invalid
-    if worked_request_sin.present?
-      errors.add(:started_at, "より早い時間は無効です。") if started_at > finished_at
+    if worked_request_sign.present?
+      if started_at.present? && finished_at.present? && (next_day.present? && next_day == "false")
+        errors.add(:started_at, "より早い時間は無効です。") if started_at > finished_at
+      end
     end
   end
   
   def worked_request_sign_and_finished_at_is_invalid_without_a_started_at
-    if worked_request_sin.present?
+    if worked_request_sign.present?
       errors.add(:started_at,"が必要です。") if started_at.blank? && finished_at.present?
     end
   end
   
   def worked_request_sign_and_started_at_is_invalid_without_a_finished_at
-    if worked_request_sin.present?
+    if worked_request_sign.present?
       errors.add(:finished_at,"が必要です。") if started_at.present? && finished_at.blank?
     end
   end

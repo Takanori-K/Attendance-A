@@ -37,7 +37,7 @@ class AttendancesController < ApplicationController
         attendance.update_attributes!(item)
       end
     end
-    flash[:success] = "１ヶ月分の勤怠情報を更新しました。"
+    flash[:success] = "勤怠変更申請を送信しました。"
     redirect_to user_url(date: params[:date])
   rescue ActiveRecord::RecordInvalid
     flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
@@ -129,7 +129,7 @@ class AttendancesController < ApplicationController
   private
     
     def attendances_params
-      params.require(:user).permit(attendances: [:started_at, :finished_at, :note])[:attendances]
+      params.require(:user).permit(attendances: [:started_at, :finished_at, :note, :next_day, :worked_request_sign])[:attendances]
     end
     
     def overtime_params
