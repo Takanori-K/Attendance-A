@@ -26,6 +26,8 @@ class UsersController < ApplicationController
     @superiors = User.where.not(id: current_user.id).where(superior: true)
     @month = Attendance.where(one_month_sign: current_user.name).where(month_status: 0)
     @month_count = Attendance.where(one_month_sign: current_user.name, month_status: 0).count
+    @worked_request = Attendance.where.not(worked_request_sign: nil).where(worked_status: 0)
+    @worked_count = Attendance.where(one_month_sign: current_user.name, worked_status: 0).count
    
     respond_to do |format|
       format.html do
