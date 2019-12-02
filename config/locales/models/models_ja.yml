@@ -40,3 +40,7 @@ ja:
         month_applying: 申請中
         month_approval: 承認
         month_denial: 否認
+      worked_status:
+        worked_appling: 申請中
+        worked_approval: 承認
+        worked_denial: 否認

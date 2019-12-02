@@ -1,0 +1,86 @@
+<div class="modal-dialog modal-lg modal-dialog-center">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <%= form_with(model: @user, url: update_month_work_info_path(date: @first_day), local: true) do |f| %>
+    <div class="modal-body">
+      <% count = 0 %>
+      <% @users.each do |user| %>
+      <% count = 1 %>
+        <% attendances = Attendance.where(user_id: user.id, worked_request_sign: current_user.name, worked_status: 0) %>
+          <% if attendances.present? && count == 1 %>
+            <h3 class="modal-title">【<%= user.name %>からの勤怠変更申請】</h3>
+              <table class="table table-striped table-bordered table-condensed" id ="table-attendances">
+                <thead>
+                  <tr>
+                    <th rowspan = "3">日付</th>
+                    <th rowspan = "3">曜日</th>
+                    <th colspan = "4">変更前</th>
+                    <th colspan = "4">変更後</th>
+                    <th rowspan = "3">備考</th>
+                    <th rowspan = "3">指示者確認㊞</th>
+                    <th rowspan = "3">変更</th>
+                    <th rowspan = "3">勤怠を確認する</th>
+                  </tr>
+                  <tr>
+                    <th colspan = "2">出社</th>
+                    <th colspan = "2">退社</th>
+                    <th colspan = "2">出社</th>
+                    <th colspan = "2">退社</th>
+                  </tr>
+                  <tr>
+                    <th>時</th>
+                    <th>分</th>
+                    <th>時</th>
+                    <th>分</th>
+                    <th>時</th>
+                    <th>分</th>
+                    <th>時</th>
+                    <th>分</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% attendances.each do |at| %>
+                    <%= f.fields_for "attendances[]", at do |attendance| %>
+                      <tr>
+                        <td><%= l(at.worked_on, format: :short) %></td>
+                        <td>
+                          <% if at.worked_on.wday == 0 %>
+                            <font color="Red"><%= $days_of_the_week[at.worked_on.wday] %></font>
+                          <% elsif at.worked_on.wday == 6 %>
+                            <font color="Blue"><%= $days_of_the_week[at.worked_on.wday] %></font>
+                          <% else %>
+                            <%= $days_of_the_week[at.worked_on.wday] %>
+                          <% end %> 
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><%= at.note %></td>
+                        <td>
+                          <%= attendance.select :worked_status, Attendance.overtime_statuses_i18n.invert, {}, {class: "form-control"} %>
+                        </td>
+                        <td><%= attendance.check_box :worked_change %></td>
+                        <td><%= link_to "確認", user_path(user, date: @first_day), class: "btn btn-primary" %></td>
+                      </tr>
+                    <% end %>  
+                  <% end %>    
+                </tbody>
+              </table>
+          <% end %>
+      <% end %>
+    </div>
+    <div class="center">
+      <%= f.submit "変更を送信する", class: "btn btn-lg btn-primary" %>
+    </div>
+    <% end %>
+  </div>
+</div>

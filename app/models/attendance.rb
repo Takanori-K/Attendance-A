@@ -16,6 +16,7 @@ class Attendance < ApplicationRecord
   
   enum overtime_status: { applying: 0, approval: 1, denial: 2 }
   enum month_status: { month_applying: 0, month_approval: 1, month_denial: 2 }
+  enum worked_status: { worked_appling: 0, worked_approval: 1, worked_denial: 2 }
   
   def finished_at_is_invalid_without_a_started_at
     errors.add(:started_at,"が必要です。") if started_at.blank? && finished_at.present?
