@@ -56,14 +56,14 @@
                             <%= $days_of_the_week[at.worked_on.wday] %>
                           <% end %> 
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%= at.started_at_was.to_s(:hour) if at.started_at.present? %></td>
+                        <td><%= at.started_at_was.to_s(:min) if at.started_at.present? %></td>
+                        <td><%= at.finished_at_was.to_s(:hour) if at.finished_at.present? %></td>
+                        <td><%= at.finished_at_was.to_s(:min) if at.finished_at.present? %></td>
+                        <td><%= at.started_at.to_s(:hour) if at.started_at.present? %></td>
+                        <td><%= at.started_at.to_s(:min) if at.started_at.present? %></td>
+                        <td><%= at.finished_at.to_s(:hour) if at.finished_at.present? %></td>
+                        <td><%= at.finished_at.to_s(:min) if at.finished_at.present? %></td>
                         <td><%= at.note %></td>
                         <td>
                           <%= attendance.select :worked_status, Attendance.overtime_statuses_i18n.invert, {}, {class: "form-control"} %>
