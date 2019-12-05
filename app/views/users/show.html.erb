@@ -3,6 +3,7 @@
   <%= f.hidden_field :id, :value => @attendance.id %> <!-- attendancesテーブルのidを渡す -->
   <%= f.hidden_field :user_id, :value => @user.id %>
   <%= f.hidden_field :worked_month, :value => @first_day %>
+  <%= f.hidden_field :month_status, value: "month_applying" %>
   <%= f.hidden_field :month_change, value: "false" %>
 <div>
   <table class="table table-bordered table-condensed user-table">
@@ -170,14 +171,22 @@
         <td>
           <% if day.instructor_sign.present? %>
             <% if day.applying? %>
-              <span><%= day.instructor_sign %>へ残業申請中</span>
+              <span><%= day.instructor_sign %>へ残業申請中&emsp;</span>
             <% end %>  
             <% if day.approval? %>
-              <span>残業承認済</span>
+              <span>残業承認済&emsp;</span>
             <% end %>
             <% if day.denial? %>
-              <span>残業否認</span>
+              <span>残業否認&emsp;</span>
             <% end %>  
+          <% end %>
+          
+          <% if day.worked_request_sign.present? %>
+            <% if day.worked_approval? %>
+              <span>勤怠編集承認済み</span>
+            <% elsif day.worked_denial? %>
+              <span>勤怠編集否認</span>
+            <% end %>
           <% end %>  
         </td>
       </tr>

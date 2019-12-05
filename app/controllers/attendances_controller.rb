@@ -11,13 +11,13 @@ class AttendancesController < ApplicationController
     @attendance = Attendance.find(params[:id])
     # 出勤時間が未登録であることを判定します。
     if @attendance.started_at.nil?
-      if @attendance.update_attributes(started_at: Time.current.change(sec: 0))
+      if @attendance.update_attributes(started_at: Time.current.change(sec: 0), applying_started_at: Time.current.change(sec: 0))
         flash[:info] = "おはようございます！"
       else
         flash[:danger] = UPDATE_ERROR_MSG
       end
     elsif @attendance.finished_at.nil?
-      if @attendance.update_attributes(finished_at: Time.current.change(sec: 0))
+      if @attendance.update_attributes(finished_at: Time.current.change(sec: 0), applying_finished_at: Time.current.change(sec: 0))
         flash[:info] = "お疲れ様でした。"
       else
         flash[:danger] = UPDATE_ERROR_MSG
@@ -127,12 +127,24 @@ class AttendancesController < ApplicationController
   end
   
   def update_worked_info
+    @user = User.find(params[:user_id])
+    ActiveRecord::Base.transaction do
+      worked_request_params.each do |id, item|
+        attendance = Attendance.find(id)
+        attendance.update_attributes!(item)
+      end
+    end
+      flash[:success] = "勤怠変更を送信しました。"
+      redirect_to user_url(current_user)
+  rescue ActiveRecord::RecordInvalid
+      flash[:danger] = "変更にチェックを入れてください。"
+      redirect_to user_url(current_user)
   end
   
   private
     
     def attendances_params
-      params.require(:user).permit(attendances: [:started_at, :finished_at, :note, :next_day, :worked_request_sign])[:attendances]
+      params.require(:user).permit(attendances: [:applying_started_at, :applying_finished_at, :note, :next_day, :worked_request_sign, :worked_status, :worked_change])[:attendances]
     end
     
     def overtime_params
@@ -144,11 +156,15 @@ class AttendancesController < ApplicationController
     end
     
     def month_params
-      params.require(:attendance).permit(:one_month_sign, :worked_month)
+      params.require(:attendance).permit(:one_month_sign, :month_status, :month_change, :worked_month)
     end
     
     def month_request_params
       params.require(:user).permit(attendances: [:month_status, :month_change])[:attendances]
+    end
+    
+    def worked_request_params
+      params.require(:user).permit(attendances: [:started_at, :finished_at, :worked_status, :worked_change])[:attendances]
     end
     
      def admin_or_correct_user
