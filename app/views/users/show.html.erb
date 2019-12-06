@@ -131,8 +131,20 @@
             <%= $days_of_the_week[day.worked_on.wday] %>
           <% end %> 
         </td>
-        <td><%= day.started_at.to_s(:hour) if day.started_at.present? %></td>
-        <td><%= day.started_at.to_s(:min) if day.started_at.present? %></td>
+        <td>
+          <% if day.worked_approval? %>
+            <%= day.applying_started_at.to_s(:hour) if day.applying_started_at.present? %>
+          <% else %>  
+            <%= day.started_at.to_s(:hour) if day.started_at.present? %>
+          <% end %>  
+        </td>
+        <td>
+          <% if day.worked_approval? %>
+            <%= day.applying_started_at.to_s(:min) if day.applying_started_at.present? %>
+          <% else %>  
+            <%= day.started_at.to_s(:min) if day.started_at.present? %>
+          <% end %>
+        </td>
         <td>
           <% if current_user?(@user) %>
             <% if day.worked_on == Date.today && day.started_at.nil? %>

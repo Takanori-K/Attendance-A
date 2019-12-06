@@ -47,6 +47,8 @@
                     <%= f.fields_for "attendances[]", at do |attendance| %>
                     <%= attendance.hidden_field :started_at, :value => at.applying_started_at %>
                     <%= attendance.hidden_field :finished_at, :value => at.applying_finished_at %>
+                    <%= attendance.hidden_field :applying_started_at, :value => at.started_at if at.worked_denial? %>
+                    <%= attendance.hidden_field :applying_finished_at, :value => at.finished_at if at.worked_denial? %>
                       <tr>
                         <td><%= l(at.worked_on, format: :short) %></td>
                         <td>

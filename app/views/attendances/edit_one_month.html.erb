@@ -35,7 +35,7 @@
                 <td><%= attendance.time_field :applying_started_at, readonly: true, class: "form-control" %></td>
                 <td><%= attendance.time_field :applying_finished_at, readonly: true, class: "form-control" %></td>
               <% else %>
-                <td><%= attendance.time_field :applying_started_at, class: "form-control" %></td>
+                <td><%= attendance.time_field :applying_started_at, class: "form-control" %> </td>
                 <td><%= attendance.time_field :applying_finished_at, class: "form-control" %></td>
               <% end %> 
               <td><%= attendance.check_box :next_day, {:checked => false}, "true", "false" %></td>
