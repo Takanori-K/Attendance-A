@@ -128,16 +128,11 @@ class AttendancesController < ApplicationController
   
   def update_worked_info
     @user = User.find(params[:user_id])
-    ActiveRecord::Base.transaction do
-      worked_request_params.each do |id, item|
-        attendance = Attendance.find(id)
-        attendance.update_attributes!(item)
-      end
+    worked_request_params.each do |id, item|
+      attendance = Attendance.find(id)
+      attendance.update_attributes!(item)
     end
       flash[:success] = "勤怠変更を送信しました。"
-      redirect_to user_url(current_user)
-  rescue ActiveRecord::RecordInvalid
-      flash[:danger] = "変更にチェックを入れてください。"
       redirect_to user_url(current_user)
   end
   
@@ -164,7 +159,7 @@ class AttendancesController < ApplicationController
     end
     
     def worked_request_params
-      params.require(:user).permit(attendances: [:started_at, :finished_at, :worked_status, :worked_change])[:attendances]
+      params.require(:user).permit(attendances: [:started_at, :finished_at, :applying_started_at, :worked_status, :worked_change])[:attendances]
     end
     
      def admin_or_correct_user

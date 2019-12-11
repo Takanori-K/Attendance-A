@@ -131,20 +131,8 @@
             <%= $days_of_the_week[day.worked_on.wday] %>
           <% end %> 
         </td>
-        <td>
-          <% if day.worked_approval? %>
-            <%= day.applying_started_at.to_s(:hour) if day.applying_started_at.present? %>
-          <% else %>  
-            <%= day.started_at.to_s(:hour) if day.started_at.present? %>
-          <% end %>  
-        </td>
-        <td>
-          <% if day.worked_approval? %>
-            <%= day.applying_started_at.to_s(:min) if day.applying_started_at.present? %>
-          <% else %>  
-            <%= day.started_at.to_s(:min) if day.started_at.present? %>
-          <% end %>
-        </td>
+        <td><%= day.started_at.to_s(:hour) if day.started_at.present? %></td>
+        <td><%= day.started_at.to_s(:min) if day.started_at.present? %></td>
         <td>
           <% if current_user?(@user) %>
             <% if day.worked_on == Date.today && day.started_at.nil? %>
@@ -194,7 +182,9 @@
           <% end %>
           
           <% if day.worked_request_sign.present? %>
-            <% if day.worked_approval? %>
+            <% if day.worked_applying? %>
+              <span><%= day.instructor_sign %>へ勤怠編集申請中</span>
+            <% elsif day.worked_approval? %>
               <span>勤怠編集承認済み</span>
             <% elsif day.worked_denial? %>
               <span>勤怠編集否認</span>

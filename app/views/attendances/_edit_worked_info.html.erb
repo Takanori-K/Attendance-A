@@ -10,7 +10,7 @@
       <% count = 0 %>
       <% @users.each do |user| %>
       <% count = 1 %>
-        <% attendances = Attendance.where(user_id: user.id, worked_request_sign: current_user.name, worked_status: 0) %>
+        <% attendances = Attendance.where(user_id: user.id, worked_request_sign: current_user.name, worked_change: "0") %>
           <% if attendances.present? && count == 1 %>
             <h3 class="modal-title">【<%= user.name %>からの勤怠変更申請】</h3>
               <table class="table table-striped table-bordered table-condensed" id ="table-attendances">
@@ -45,10 +45,6 @@
                 <tbody>
                   <% attendances.each do |at| %>
                     <%= f.fields_for "attendances[]", at do |attendance| %>
-                    <%= attendance.hidden_field :started_at, :value => at.applying_started_at %>
-                    <%= attendance.hidden_field :finished_at, :value => at.applying_finished_at %>
-                    <%= attendance.hidden_field :applying_started_at, :value => at.started_at if at.worked_denial? %>
-                    <%= attendance.hidden_field :applying_finished_at, :value => at.finished_at if at.worked_denial? %>
                       <tr>
                         <td><%= l(at.worked_on, format: :short) %></td>
                         <td>
