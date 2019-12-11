@@ -131,8 +131,24 @@
             <%= $days_of_the_week[day.worked_on.wday] %>
           <% end %> 
         </td>
-        <td><%= day.started_at.to_s(:hour) if day.started_at.present? %></td>
-        <td><%= day.started_at.to_s(:min) if day.started_at.present? %></td>
+        <td>
+          <% if day.approval_started.present? && day.worked_approval? %>
+            <%= day.approval_started.to_s(:hour) %>
+          <% elsif (day.denial_started.present? && day.worked_applying?) || (day.denial_started.present? && day.worked_denial?) %>
+            <%= day.denial_started.to_s(:hour) %>
+          <% elsif day.started_at.present? && day.worked_change == "0" %>
+            <%= day.started_at.to_s(:hour) %>
+          <% end %>  
+        </td>
+        <td>
+          <% if day.approval_started.present? && day.worked_approval? %>
+            <%= day.approval_started.to_s(:min) %>
+          <% elsif (day.denial_started.present? && day.worked_applying?) || (day.denial_started.present? && day.worked_denial?) %>
+            <%= day.denial_started.to_s(:min) %>
+          <% elsif day.started_at.present? && day.worked_change == "0" %>
+            <%= day.started_at.to_s(:min) %>
+          <% end %>
+        </td>
         <td>
           <% if current_user?(@user) %>
             <% if day.worked_on == Date.today && day.started_at.nil? %>

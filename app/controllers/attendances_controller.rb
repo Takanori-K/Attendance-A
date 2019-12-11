@@ -159,7 +159,7 @@ class AttendancesController < ApplicationController
     end
     
     def worked_request_params
-      params.require(:user).permit(attendances: [:started_at, :finished_at, :applying_started_at, :worked_status, :worked_change])[:attendances]
+      params.require(:user).permit(attendances: [:approval_started, :approval_finished, :denial_started, :denial_finished, :worked_status, :worked_change])[:attendances]
     end
     
      def admin_or_correct_user
