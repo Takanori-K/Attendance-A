@@ -18,7 +18,12 @@
       <tbody>
         <% @attendances.each do |day| %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
+          <% if day.worked_approval? %>
+            <%= attendance.hidden_field :started_at,  value: day.approval_started %>
+            <%= attendance.hidden_field :finished_at, value: day.approval_finished %>
+          <% end %>  
           <%= attendance.hidden_field :worked_change, value: "0" %>
+          <%= attendance.hidden_field :worked_status, value: "worked_applying" %>
             <tr>
               <td><%= l(day.worked_on, format: :short) %></td>
               <td>
@@ -34,7 +39,7 @@
                 <td><%= attendance.time_field :applying_started_at, readonly: true, class: "form-control" %></td>
                 <td><%= attendance.time_field :applying_finished_at, readonly: true, class: "form-control" %></td>
               <% else %>
-                <td><%= attendance.time_field :applying_started_at, class: "form-control" %> </td>
+                <td><%= attendance.time_field :applying_started_at, class: "form-control" %></td>
                 <td><%= attendance.time_field :applying_finished_at, class: "form-control" %></td>
               <% end %> 
               <td><%= attendance.check_box :next_day, {:checked => false}, "true", "false" %></td>
