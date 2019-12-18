@@ -38,13 +38,13 @@
 
 <% if current_user?(@user) %>
   <% if current_user.superior? %>
-    <% if @month.blank? %>
-      <h4>【所属長承認申請のお知らせ】</h4>
-    <% else %>
+    <% if @month.present? || @month_2.present? %>
       <div class="month-info">
         <%= link_to "【所属長承認申請のお知らせ】", edit_month_work_info_path(user_id: @user.id, id: @attendance.id, date: @first_day), remote: true, style: "color:red" %>
-          <font color="red"><%= @month_count %>件の通知があります</font>
+        <font color="red"><%= @month_count.to_i + @month_2_count.to_i %>件の通知があります</font>
       </div>
+    <% else %>
+      <h4>【所属長承認申請のお知らせ】</h4>
     <% end %>
     
     <% if @worked_request.blank? %>
@@ -56,31 +56,23 @@
       </div>    
     <% end %>
     
-    <% if @notice.blank? %>
-      <h4>【残業申請のお知らせ】</h4><br>
+    <% if @notice.present? || @notice_2.present? %>
+      <div class="overtime-info">
+        <%= link_to "【残業申請のお知らせ】", edit_overtime_info_path(@user, date: @first_day), remote: true, style: "color:red" %>
+        <font color="red"><%= @count.to_i + @count_2.to_i %>件の通知があります</font><br>
+      </div>
+    <% else %>  
+      <h4>【残業申請のお知らせ】</h4>
     <% end %>
-    <% count = 0 %>
-      <% @users.each do |user| %>
-        <% attendances = Attendance.where(user_id: user.id) %>
-          <% attendances.each do |at| %>
-            <% count += 1 %>
-              <% if @notice.present? && count == 1 %>
-                <div class="overtime-info">
-                    <%= link_to "【残業申請のお知らせ】", edit_overtime_info_path(user_id: user, id: at.id, date: @first_day), remote: true, style: "color:red" %>
-                    <font color="red"><%= @count %>件の通知があります</font>
-                </div>    
-                 <% break %>
-              <% end %>
-          <% end %>  
-      <% end %>
   <% end %>
 <% end %>
 
 <% if current_user?(@user) %>
   <div class="btn-users-show">
     <%= link_to "１ヶ月の勤怠編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
+    <%= link_to "CSV出力", user_path(format: :csv), class: "btn btn-primary" %><br>
+    <%= link_to "勤怠修正ログ（承認済）", '#', class: "btn btn-primary" %>
   </div>
-  <%= link_to "CSV出力", user_path(format: :csv), class: "btn btn-primary" %>
 <% end %>
 <div>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
@@ -183,16 +175,14 @@
             <% end %>  
           <% end %>
         </td>
-        <td><%= day.business_description if day.approval? %></td>
+        <td><%= day.business_description if day.approval? && day.overtime_change == "true" %></td>
         <td>
           <% if day.instructor_sign.present? %>
-            <% if day.applying? %>
+            <% if day.applying? || (day.approval? && day.overtime_change == "false") || (day.denial? && day.overtime_change == "false") %>
               <span><%= day.instructor_sign %>へ残業申請中&emsp;</span>
-            <% end %>  
-            <% if day.approval? %>
+            <% elsif day.approval? && day.overtime_change == "true" %>
               <span>残業承認済&emsp;</span>
-            <% end %>
-            <% if day.denial? %>
+            <% elsif day.denial? && day.overtime_change == "true" %>
               <span>残業否認&emsp;</span>
             <% end %>  
           <% end %>
@@ -218,19 +208,16 @@
         <td>累計在社時間</td>
         <td colspan = "5" rowspan = "3"></td>
         <td rowspan = "3">
-          <% if @superior.one_month_sign.present? && @superior.worked_month == @first_day %>
-            <% if @superior.month_applying? %>
+          <% if @superior.one_month_sign.present? && @superior.worked_month.present? %>
+            <% if @superior.month_applying? || (@superior.month_approval? && @superior.month_change == "false") || (@superior.month_denial? && @superior.month_change == "false") %>
               所属長承認　<%= @superior.one_month_sign %>へ申請中<br>
-            <% end %>  
-            <% if @superior.month_approval? %>
+            <% elsif @superior.month_approval? && @superior.month_change == "true" %>
               所属長承認　<%= @superior.one_month_sign %>から承認済み<br>
-            <% end %>  
-            <% if @superior.month_denial? %>
+            <% elsif @superior.month_denial? && @superior.month_change == "true" %>
               所属長承認　<%= @superior.one_month_sign %>から否認済み<br>
+            <% else %>
+              所属長承認  未
             <% end %>
-          <% end %>  
-          <% unless @superior.worked_month == @first_day %>
-            所属長承認　未<br>
           <% end %>  
             
           <% if current_user?(@user) %>

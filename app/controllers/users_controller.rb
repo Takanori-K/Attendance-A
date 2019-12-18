@@ -21,11 +21,15 @@ class UsersController < ApplicationController
     @worked_sum = @attendances.where.not(started_at: nil).count
     @users = User.all
     @month_request = Attendance.where.not(one_month_sign: nil).where.not(worked_month: nil)
-    @count = Attendance.where(instructor_sign: current_user.name, overtime_status: 0).count
-    @notice = Attendance.where(instructor_sign: current_user.name).where(overtime_status: 0)
+    @count_2 = Attendance.where(instructor_sign: current_user.name).where(overtime_change: "false").where(overtime_status: [1, 2]).count
+    @count = Attendance.where(instructor_sign: current_user.name).where(overtime_change: ["true", "false"]).where(overtime_status: 0).count
+    @notice = Attendance.where(instructor_sign: current_user.name).where(overtime_change: ["true", "false"]).where(overtime_status: 0)
+    @notice_2 = Attendance.where(instructor_sign: current_user.name).where(overtime_change: "false").where(overtime_status: [1, 2])
     @superiors = User.where.not(id: current_user.id).where(superior: true)
-    @month = Attendance.where(one_month_sign: current_user.name).where(month_status: 0)
-    @month_count = Attendance.where(one_month_sign: current_user.name, month_status: 0).count
+    @month = Attendance.where(one_month_sign: current_user.name).where(month_change: ["true", "false"]).where(month_status: 0)
+    @month_2 = Attendance.where(one_month_sign: current_user.name).where(month_change: "false").where(month_status: [1, 2])
+    @month_count = Attendance.where(one_month_sign: current_user.name).where(month_change: ["true", "false"]).where(month_status: 0).count
+    @month_2_count = Attendance.where(one_month_sign: current_user.name).where(month_change: "false").where(month_status: [1, 2]).count
     @worked_request = Attendance.where(worked_request_sign: current_user.name).where(worked_change: "0")
     @worked_count = Attendance.where(worked_request_sign: current_user.name, worked_status: 0).count
    
