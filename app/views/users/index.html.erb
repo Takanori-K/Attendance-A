@@ -14,7 +14,7 @@
     <div class="form-gruop">
       <p><%= user.name %></p>
         |&nbsp;<%= link_to "削除", user, method: :delete, class: "btn btn-primary",
-                                    data: { confirm: "削除しますか？" } %>
+                                    data: { confirm: "#{user.name}を削除しますか？" } %>
         <div class="panel-gruop" id="accordion">
           <div class="panel panel-default">
             <div class="panel-heading">
