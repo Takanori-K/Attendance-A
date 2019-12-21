@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   
   get 'users/:id/workig_employee', to: 'users#working_employee', as: :working_employee
   resources :users do
+    collection { post :import }
     member do
       get 'edit_basic_info'
       patch 'update_basic_info'
@@ -30,4 +31,5 @@ Rails.application.routes.draw do
     end
     resources :attendances, only: :update
   end
+  resources :bases
 end
