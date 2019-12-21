@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'bases/new'
+
   root 'static_pages#top'
   
   get    '/login', to: 'sessions#new'
