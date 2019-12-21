@@ -208,20 +208,7 @@
         <td>累計在社時間</td>
         <td colspan = "5" rowspan = "3"></td>
         <td rowspan = "3">
-          <% @attendances.each do |day| %>
-            <% if day.one_month_sign.present? && day.worked_month.present? %>
-              <% if day.month_applying? || (day.month_approval? && day.month_change == "false") || (day.month_denial? && day.month_change == "false") %>
-                所属長承認　<%= day.one_month_sign %>へ申請中<br>
-              <% elsif day.month_approval? && day.month_change == "true" %>
-                所属長承認　<%= day.one_month_sign %>から承認済み<br>
-              <% elsif day.month_denial? && day.month_change == "true" %>
-                所属長承認　<%= day.one_month_sign %>から否認済み<br>
-              <% else %>
-                所属長承認  未
-              <% end %>
-            <% end %>
-            <% break %>
-          <% end %>
+          所属長承認  未
           
             
           <% if current_user?(@user) %>

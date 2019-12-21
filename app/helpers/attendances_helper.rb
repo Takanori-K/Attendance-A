@@ -18,11 +18,11 @@ module AttendancesHelper
   end
   
   def overwork_times(scheduled, designated)
-    format("%.2f", format_basic_info(scheduled).to_i - format_basic_info(designated).to_i)
+    format("%.2f", format_basic_info(scheduled).to_f - format_basic_info(designated).to_i)
   end
   
   def overwork_times_tomorrow(scheduled, designated)
-    format("%.2f", (format_basic_info(scheduled).to_i - format_basic_info(designated).to_i) + 24 )
+    format("%.2f", (format_basic_info(scheduled).to_f - format_basic_info(designated).to_i) + 24 )
   end
   
 end

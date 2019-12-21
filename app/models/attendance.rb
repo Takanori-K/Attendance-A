@@ -8,8 +8,8 @@ class Attendance < ApplicationRecord
   
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid
-  validate :overtime_change?
-  validate :month_request_change?
+  #validate :overtime_change?
+  #validate :month_request_change?
   #validate :worked_request_change?
   validate :worked_request_sign_and_started_at_than_finished_at_fast_if_invalid
   validate :worked_request_sign_and_finished_at_is_invalid_without_a_started_at
