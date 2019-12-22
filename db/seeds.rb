@@ -1,27 +1,30 @@
-User.create!(name: "管理者",
-             email: "sample@email.com",
-             password: "password",
+User.create!(name:  "管理者",
+             email: "email@sample.com",
+             password:              "password",
              password_confirmation: "password",
-             employee_number: "1",
+             employee_number:        "1",
+             uid:                    "111",
              admin: true)
 
 User.create!(name: "上長A",
-             email: "sample-1@email.com",
-             password: "password",
+             email: "email1@gmail.com",
+             password:              "password",
              password_confirmation: "password",
-             employee_number: "2",
+             employee_number:       "2",
+             uid:                   "222",
              superior: true)
 
 User.create!(name: "上長B",
-             email: "sample-2@email.com",
-             password: "password",
+             email: "email2@gmail.com",
+             password:              "password",
              password_confirmation: "password",
-             employee_number: "3",
-             superior: true)             
+             employee_number:       "3",
+             uid:                   "333",
+             superior: true)
 
 User.create!(name: "一般",
-             email: "sample-3@email.com",
-             password: "password",
+             email: "email3@gmail.com",
+             password:              "password",
              password_confirmation: "password",
-             employee_number: "4")
-             
+             employee_number:       "4",
+             uid:                   "444")

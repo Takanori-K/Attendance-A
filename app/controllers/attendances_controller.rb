@@ -91,16 +91,13 @@ class AttendancesController < ApplicationController
   end
   
   def update_one_month_info
-    @user = User.find(params[:attendance][:user_id])
-    @attendance = @user.attendances.find(params[:attendance][:id])
-    if params[:attendance][:one_month_sign].blank?
-      flash[:danger] = "所属長を選択してください。"
-      redirect_to @user
-    else
-      @attendance.update_attributes(month_params)
-      flash[:success] = "一ヵ月分の勤怠承認を申請しました。"
-      redirect_to @user and return
-    end
+    @user = User.find(params[:id])
+    one_month = Attendance.where(user_id: current_user.id, worked_on: @first_day..@last_day)
+    attendances = []
+    one_month.each do |day|
+      attendances << Attendance.new(:one_month_sign => day.one_month_sign, :worked_month => @first_day, :month_change => "false", :month_status => "month_applying")
+    end  
+      Attendance.import attendances
   end
   
   def edit_month_work_info

@@ -1,7 +1,5 @@
 <% provide(:title, @user.name) %>
 <%= form_with(model: @attendance, url: update_month_info_path(@user), local: true, method: :patch) do |f| %>
-  <%= f.hidden_field :id, :value => @attendance.id %> <!-- attendancesテーブルのidを渡す -->
-  <%= f.hidden_field :user_id, :value => @user.id %>
   <%= f.hidden_field :worked_month, :value => @first_day %>
   <%= f.hidden_field :month_status, value: "month_applying" %>
   <%= f.hidden_field :month_change, value: "false" %>
