@@ -11,6 +11,7 @@ class Attendance < ApplicationRecord
   #validate :overtime_change?
   #validate :month_request_change?
   #validate :worked_request_change?
+  #validate :month_change_request_sign
   validate :worked_request_sign_and_started_at_than_finished_at_fast_if_invalid
   validate :worked_request_sign_and_finished_at_is_invalid_without_a_started_at
   validate :worked_request_sign_and_started_at_is_invalid_without_a_finished_at
@@ -39,6 +40,10 @@ class Attendance < ApplicationRecord
     if month_change.present? && month_change == "0"
       errors.add(:month_change, "チェックを入れてください。")
     end
+  end
+  
+  def month_change_request_sign
+    errors.add(:one_month_sign, "所属長を選択してください。") if one_month_sign.blank?
   end
   
   def worked_request_change?

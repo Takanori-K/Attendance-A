@@ -91,13 +91,18 @@ class AttendancesController < ApplicationController
   end
   
   def update_one_month_info
-    @user = User.find(params[:id])
-    one_month = Attendance.where(user_id: current_user.id, worked_on: @first_day..@last_day)
-    attendances = []
-    one_month.each do |day|
-      attendances << Attendance.new(:one_month_sign => day.one_month_sign, :worked_month => @first_day, :month_change => "false", :month_status => "month_applying")
-    end  
-      Attendance.import attendances
+    @user = User.find(params[:user_id])
+    ActiveRecord::Base.transaction do
+      month_params.each do |id, item|
+        attendance = Attendance.find(id)
+        attendance.update_attributes!(item)
+      end
+    end
+      flash[:success] = "１ヵ月分の勤怠承認を申請しました。"
+      redirect_to user_url(current_user)
+  rescue ActiveRecord::RecordInvalid
+      flash[:danger] = "所属長を選択してください。"
+      redirect_to user_url(current_user)
   end
   
   def edit_month_work_info
@@ -128,7 +133,7 @@ class AttendancesController < ApplicationController
   end
   
   def update_worked_info
-    @user = User.find(params[:user_id])
+    @user = User.params[:user_id]
     worked_request_params.each do |id, item|
       attendance = Attendance.find(id)
       attendance.update_attributes!(item)
@@ -152,7 +157,7 @@ class AttendancesController < ApplicationController
     end
     
     def month_params
-      params.require(:attendance).permit(:one_month_sign, :month_status, :month_change, :worked_month)
+      params.require(:user).permit(attendances: [:one_month_sign, :month_status, :month_change, :worked_month])[:attendances]
     end
     
     def month_request_params
