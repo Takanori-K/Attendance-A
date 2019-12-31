@@ -204,6 +204,16 @@
         <td colspan = "5" rowspan = "3"></td>
         <td rowspan = "3">
           <% @attendances.each do |day| %>
+            <% if day.month_approval? && day.month_change == "true" %>
+              <span>所属長承認　<%= day.one_month_sign %>から承認済み</span>
+            <% elsif day.month_denial? && day.month_change == "true" %>
+              <span>所属長承認　<%= day.one_month_sign %>から否認</span>
+            <% elsif day.month_applying? && day.worked_month.present? %>
+              <span>所属長承認　<%= day.one_month_sign %>へ承認申請中</span>
+            <% elsif day.worked_month.blank? %>
+              <span>所属長承認　未</span>
+            <% end %>
+            
             <%= f.fields_for "attendances", day do |attendance| %>
               <% if current_user?(@user) %>
                 <%= attendance.select :one_month_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %><br>

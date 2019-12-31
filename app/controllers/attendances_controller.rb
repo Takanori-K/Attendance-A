@@ -3,7 +3,7 @@ class AttendancesController < ApplicationController
   before_action :set_user,       only: [:edit_one_month, :update_one_month, :edit_overtime_work, :update_overtime_work, :update_one_month_info]
   before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overtime_work, :update_overtime_work]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_mnth]
-  before_action :set_one_month,  only: :edit_one_month
+  before_action :set_one_month,  only: [:edit_one_month, :update_one_month_info]
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
   def update
@@ -91,18 +91,16 @@ class AttendancesController < ApplicationController
   end
   
   def update_one_month_info
-    @user = User.find(params[:user_id])
-    ActiveRecord::Base.transaction do
-      month_params.each do |id, item|
-        attendance = Attendance.find(id)
-        attendance.update_attributes!(item)
-      end
-    end
-      flash[:success] = "１ヵ月分の勤怠承認を申請しました。"
-      redirect_to user_url(current_user)
-  rescue ActiveRecord::RecordInvalid
+    @user = User.find(params[:id])
+    @attendance = @user.attendances.find_by(user_id: @user.id, worked_on: @first_day)
+    if params[:user][:attendances][:one_month_sign].present?
+      @attendance.update_attributes(month_params)
+      flash[:success] = "1ヶ月分の勤怠承認を申請しました。"
+      redirect_to user_path(@user, date: @first_day)
+    else
       flash[:danger] = "所属長を選択してください。"
-      redirect_to user_url(current_user)
+      redirect_to user_path(@user, date: @first_day)
+    end
   end
   
   def edit_month_work_info
