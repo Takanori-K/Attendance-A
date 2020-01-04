@@ -10,7 +10,8 @@
       <% count = 0 %>
       <% @users.each do |user| %>
       <% count = 1 %>
-        <% attendances = Attendance.where(user_id: user.id, one_month_sign: current_user.name, month_status: 0) %>
+        <% attendances =  Attendance.where(user_id: user.id, one_month_sign: current_user.name, month_change: "false").
+                       or(Attendance.where(user_id: user.id, one_month_sign: current_user.name, month_change: "true", month_status: 0)).order(created_at: :asc) %>
           <% if attendances.present? && count == 1 %>
             <h3 class="modal-title">【<%= user.name %>からの１ヵ月分勤怠申請】</h3>
               <table class="table table-bordered table-condensed" id ="table-attendances">
