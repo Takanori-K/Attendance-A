@@ -42,13 +42,13 @@
       <h4>【所属長承認申請のお知らせ】</h4>
     <% end %>
     
-    <% if @worked_request.blank? %>
-      <h4>【勤怠変更申請のお知らせ】</h4>
-    <% else %>
+    <% if @worked_request.present? || @worked_request_2.present? %>
       <div class="worked-info">
         <%= link_to "【勤怠変更申請のお知らせ】", edit_worked_info_path(@user, date: @first_day), remote: true, style: "color:red" %>
-          <font color="red"><%= @worked_count %>件の通知があります</font>
-      </div>    
+          <font color="red"><%= @worked_count.to_i + @worked_count_2.to_i %>件の通知があります</font>
+      </div>
+    <% else %>
+      <h4>【勤怠変更申請のお知らせ】</h4>
     <% end %>
     
     <% if @notice.present? || @notice_2.present? %>

@@ -22,7 +22,7 @@
             <%= attendance.hidden_field :started_at,  value: day.approval_started %>
             <%= attendance.hidden_field :finished_at, value: day.approval_finished %>
           <% end %>  
-          <%= attendance.hidden_field :worked_change, value: "0" %>
+          <%= attendance.hidden_field :worked_change, value: "false" %>
           <%= attendance.hidden_field :worked_status, value: "worked_applying" %>
             <tr>
               <td><%= l(day.worked_on, format: :short) %></td>
@@ -47,7 +47,7 @@
                 <% if day.started_at.present? && day.finished_at.present? %>
                   <% if day.next_day.present? && day.next_day == "true" %>
                     <%= working_times_tomorrow(day.started_at, day.finished_at) %>
-                  <% elsif day.next_day.present? && day.next_day == "false" %>
+                  <% else %>
                     <%= working_times(day.started_at, day.finished_at) %>
                   <% end %>
                 <% end %>  
