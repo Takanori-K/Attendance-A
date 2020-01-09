@@ -131,11 +131,11 @@ class AttendancesController < ApplicationController
   end
   
   def update_worked_info
-    @user = User.params[:user_id]
-    worked_request_params.each do |id, item|
+    @user = User.find(params[:user_id])
+      worked_request_params.each do |id, item|
       attendance = Attendance.find(id)
       attendance.update_attributes!(item)
-    end
+     end
       flash[:success] = "勤怠変更を送信しました。"
       redirect_to user_url(current_user)
   end
@@ -164,6 +164,10 @@ class AttendancesController < ApplicationController
     
     def worked_request_params
       params.require(:user).permit(attendances: [:approval_started, :approval_finished, :denial_started, :denial_finished, :worked_status, :worked_change])[:attendances]
+    end
+    
+    def worked_approval_params
+      params.require(:user).permit(attendances: [:approval_started, :approval_finished, :denial_started, :denial_finished, :worked_status, :worked_change, :started_at, :finished_at])[:attendances]
     end
     
      def admin_or_correct_user
