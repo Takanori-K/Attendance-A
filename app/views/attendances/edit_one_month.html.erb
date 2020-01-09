@@ -39,8 +39,18 @@
                 <td><%= attendance.time_field :applying_started_at, readonly: true, class: "form-control" %></td>
                 <td><%= attendance.time_field :applying_finished_at, readonly: true, class: "form-control" %></td>
               <% else %>
-                <td><%= attendance.time_field :applying_started_at, class: "form-control" %></td>
-                <td><%= attendance.time_field :applying_finished_at, class: "form-control" %></td>
+                <td>
+                  <% if day.denial_started.present? && day.worked_denial? && day.worked_change == "true" %>
+                    <% day.applying_started_at = day.denial_started %>
+                  <% end %>  
+                    <%= attendance.time_field :applying_started_at, class: "form-control" %>
+                </td>
+                <td>
+                  <% if day.denial_finished.present? && day.worked_denial? && day.worked_change == "true" %>
+                    <% day.applying_finished_at = day.denial_finished %>
+                  <% end %>  
+                    <%= attendance.time_field :applying_finished_at, class: "form-control" %>
+                </td>
               <% end %> 
               <td><%= attendance.check_box :next_day, {:checked => false}, "true", "false" %></td>
               <td>
