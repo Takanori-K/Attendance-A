@@ -8,6 +8,9 @@ class Attendance < ApplicationRecord
   
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid
+  #validate :applying_started_at_is_invalid_without_a_applying_finished_at
+  validate :applying_finished_at_is_invalid_without_a_applying_started_at
+  validate :applying_started_at_than_applying_finished_at_fast_if_invalid
   #validate :overtime_change?
   #validate :month_request_change?
   #validate :worked_request_change?
@@ -27,6 +30,23 @@ class Attendance < ApplicationRecord
   def started_at_than_finished_at_fast_if_invalid
     if started_at.present? && finished_at.present? && next_day.present? && next_day == "false"
       errors.add(:started_at, "より早い時間は無効です。") if started_at > finished_at
+    end
+  end
+  
+  #編集時間
+  def applying_started_at_is_invalid_without_a_applying_finished_at
+    errors.add(:applying_finished_at,"が必要です。") if applying_finished_at.blank? && applying_started_at.present?
+  end
+  
+  #編集時間
+  def applying_finished_at_is_invalid_without_a_applying_started_at
+    errors.add(:applying_started_at,"が必要です。") if applying_started_at.blank? && applying_finished_at.present?
+  end
+  
+  #編集時間
+  def applying_started_at_than_applying_finished_at_fast_if_invalid
+    if applying_started_at.present? && applying_finished_at.present? && next_day.present? && next_day == "false"
+      errors.add(:applying_started_at, "より早い時間は無効です。") if applying_started_at > applying_finished_at
     end
   end
   
