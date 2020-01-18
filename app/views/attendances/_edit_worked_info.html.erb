@@ -50,6 +50,7 @@
                     <%= attendance.hidden_field :denial_finished, value: at.approval_finished %>
                     <%= attendance.hidden_field :approval_started, value: at.applying_started_at %>
                     <%= attendance.hidden_field :approval_finished, value: at.applying_finished_at %>
+                    <%= attendance.hidden_field :approval_date, value: Time.zone.now %>
                       <tr>
                         <td><%= l(at.worked_on, format: :short) %></td>
                         <td>

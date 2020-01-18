@@ -3,7 +3,7 @@ class AttendancesController < ApplicationController
   before_action :set_user,       only: [:edit_one_month, :update_one_month, :edit_overtime_work, :update_overtime_work, :update_one_month_info, :worked_log]
   before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overtime_work, :update_overtime_work]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_mnth]
-  before_action :set_one_month,  only: [:edit_one_month, :update_one_month_info, :worked_log]
+  before_action :set_one_month,  only: [:edit_one_month, :update_one_month_info]
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
   def update
@@ -166,11 +166,7 @@ class AttendancesController < ApplicationController
     end
     
     def worked_request_params
-      params.require(:user).permit(attendances: [:approval_started, :approval_finished, :denial_started, :denial_finished, :worked_status, :worked_change])[:attendances]
-    end
-    
-    def worked_approval_params
-      params.require(:user).permit(attendances: [:approval_started, :approval_finished, :denial_started, :denial_finished, :worked_status, :worked_change, :started_at, :finished_at])[:attendances]
+      params.require(:user).permit(attendances: [:approval_started, :approval_finished, :denial_started, :denial_finished, :worked_status, :worked_change, :approval_date])[:attendances]
     end
     
      def admin_or_correct_user
