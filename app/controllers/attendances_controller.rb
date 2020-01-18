@@ -49,6 +49,12 @@ class AttendancesController < ApplicationController
   end
   
   def worked_log
+    @attendances = Attendance.where(user_id: current_user.id)
+    if params[:search]
+      @search_attendances = @attendances.where('worked_on LIKE ?', "%#{params[:search]}%")
+    else
+      @search_attendances = @attendances.where(user_id: current_user.id).where.not(approval_date: nil).order(:worked_on)
+    end
   end
   
   def edit_overtime_work

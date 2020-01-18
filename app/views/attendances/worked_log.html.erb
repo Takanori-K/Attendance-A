@@ -1,5 +1,10 @@
 <div>
   <h1>勤怠ログ</h1>
+  <%= form_with(scope: :search, url: worked_log_path(@user), method: :get, local: true) do |f| %>
+    <%= f.date_select(:worked_on, discard_day:true, prompt:"--", start_year:2017, end_year:Time.now.year) %>
+    <%= f.submit 'Search' %>
+  <% end %>
+  
   <table class="table table-bordered table-condensed table-striped" id ="table-attendances">
     <thead>
       <tr>
@@ -13,18 +18,17 @@
       </tr>
     </thead>
     <tbody>
-      <% attendances = Attendance.order(:id).where(user_id: current_user.id).where.not(approval_date: nil)%>
-        <% attendances.each do |day| %> 
+      <% @search_attendances.each do |day| %> 
           <tr>
             <td><%= l(day.worked_on) %></td>
-            <td><%= l(day.started_at, format: :time) %></td>
-            <td><%= l(day.finished_at, format: :time) %></td>
-            <td><%= l(day.approval_started, format: :time) %></td>
-            <td><%= l(day.approval_finished, format: :time) %></td>
+            <td><%= day.started_at %></td>
+            <td><%= day.finished_at %></td>
+            <td><%= day.approval_started %></td>
+            <td><%= day.approval_finished %></td>
             <td><%= day.worked_request_sign %></td>
-            <td><%= l(day.approval_started) %></td>
+            <td><%= day.approval_started %></td>
           </tr>
-        <% end %> 
+      <% end %> 
     </tbody>
   </table>  
 </div>
