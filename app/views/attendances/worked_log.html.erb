@@ -1,6 +1,5 @@
 <div>
   <h1>勤怠ログ</h1>
-    <%= link_to "リセット", '#', class: "btn btn-lg btn-default" %>
   <table class="table table-bordered table-condensed table-striped" id ="table-attendances">
     <thead>
       <tr>
@@ -14,15 +13,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
+      <% attendances = @attendances.where(user_id: @user.id, worked_status: 1, worked_change: "true") %>
+        <% attendances.each do |day| %> 
+          <tr>
+            <td><%= l(day.worked_on) %></td>
+            <td><%= l(day.started_at, format: :time) %></td>
+            <td><%= l(day.finished_at, format: :time) %></td>
+            <td><%= l(day.approval_started, format: :time) %></td>
+            <td><%= l(day.approval_finished, format: :time) %></td>
+            <td><%= day.worked_request_sign %></td>
+            <td><%= l(day.approval_started) %></td>
+          </tr>
+        <% end %> 
     </tbody>
   </table>  
 </div>
