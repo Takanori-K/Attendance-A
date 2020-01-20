@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   
-  before_action :set_user,       only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :working_employee]
+  before_action :set_user,       only: [:show, :edit, :update, :destroy, :admin_update, :edit_basic_info, :update_basic_info, :working_employee]
   before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :working_employee]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: [:index, :import, :destroy, :edit_basic_info, :update_basic_info, :working_employee]
@@ -13,6 +13,16 @@ class UsersController < ApplicationController
   
   def index
     @users = User.where.not(admin: true)
+  end
+  
+  def admin_update
+    if @user.update_attributes(users_params)
+      flash[:success] = "#{@user.name}の情報を更新しました。"
+      redirect_to users_url
+    else
+     
+      redirect_to users_url
+    end
   end
   
   def import
@@ -114,6 +124,11 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :email, :affiliation, :password, :password_confirmation, :employee_number, :uid,
                                    :basic_work_time, :designated_work_start_time, :designated_work_end_time)
     end
+    
+    def users_params
+      params.require(:user).permit(:name, :email, :affiliation, :password, :password_confirmation, :employee_number, :uid,
+                                   :basic_work_time, :designated_work_start_time, :designated_work_end_time)
+    end                               
     
     def basic_info_params
       params.require(:user).permit(:affiliation, :basic_time, :work_time)

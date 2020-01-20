@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   patch 'users/:user_id/attendances/:id/update_worked_info', to: 'attendances#update_worked_info', as: :update_worked_info
   
   get 'users/:id/workig_employee', to: 'users#working_employee', as: :working_employee
+  
+  patch 'users/:id/admin_update', to: 'users#admin_update', as: :admin_update
   resources :users do
     member do
       get 'edit_basic_info'
