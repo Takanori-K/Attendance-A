@@ -18,11 +18,10 @@ class UsersController < ApplicationController
   def admin_update
     if @user.update_attributes(users_params)
       flash[:success] = "#{@user.name}の情報を更新しました。"
-      redirect_to users_url
     else
-      @users = User.where.not(admin: true)
-      render :index
+      flash[:danger] = "#{@user.name}の情報を更新に失敗しました。<br>" + @user.errors.full_messages.join("<br>")
     end
+    redirect_to users_url
   end
   
   def import
