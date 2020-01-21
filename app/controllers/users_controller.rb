@@ -20,8 +20,8 @@ class UsersController < ApplicationController
       flash[:success] = "#{@user.name}の情報を更新しました。"
       redirect_to users_url
     else
-     
-      redirect_to users_url
+      @users = User.where.not(admin: true)
+      render :index
     end
   end
   
@@ -121,8 +121,7 @@ class UsersController < ApplicationController
   private
     
     def user_params
-      params.require(:user).permit(:name, :email, :affiliation, :password, :password_confirmation, :employee_number, :uid,
-                                   :basic_work_time, :designated_work_start_time, :designated_work_end_time)
+      params.require(:user).permit(:name, :email, :affiliation, :password, :password_confirmation, :employee_number, :uid)
     end
     
     def users_params
