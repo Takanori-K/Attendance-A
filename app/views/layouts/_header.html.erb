@@ -1,6 +1,17 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
     <%= link_to "Attendance App", root_path, id: "logo" %>
+    <% if logged_in? %>
+      <ul class="nav navbar-nav navbar-left" id="attribute-name">
+        <% if current_user.admin? %>
+          <li><font color="Red">admin</font></li>
+        <% elsif current_user.superior? %>
+          <li><font color="Blue">superior</font></li>
+        <% else %>
+          <li><font color="Yellow"><%= current_user.name %></font></li>
+        <% end %>  
+      </ul>
+    <% end %>  
       <nav>
         <ul class="nav navbar-nav navbar-right">
           <li><%= link_to "ホーム", root_path %></li>
