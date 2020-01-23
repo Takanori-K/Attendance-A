@@ -205,7 +205,7 @@
           <% end %>
           
           <% if day.worked_request_sign.present? %>
-            <% if day.worked_applying? %>
+            <% if day.worked_applying? && day.applying_started_at.present? && day.applying_finished_at.present? %>
               <span><%= day.worked_request_sign %>へ勤怠編集申請中</span>
             <% elsif day.worked_approval? %>
               <span>勤怠編集承認済み</span>

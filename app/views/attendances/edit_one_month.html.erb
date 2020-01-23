@@ -65,7 +65,11 @@
                   <% end %>
                 <% end %>  
               </td>
-              <td><%= attendance.text_field :note, class: "form-control" %></td>
+              <td>
+                <% if Date.current < day.worked_on %>
+                  <%= attendance.text_field :note, readonly: true, class: "form-control" %>
+                <% end %>
+              </td>
               <td>
                 <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %>
               </td>
