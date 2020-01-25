@@ -55,7 +55,7 @@ class AttendancesController < ApplicationController
     if params[:search].present?
       @attendances_search = @all_worked_on.where('worked_on LIKE ?', "%#{params[:search]}%")
     else
-      @attendances_search = Attendance.none
+      @attendances_search = @all_worked_on.where(worked_on: @first_day..@last_day)
     end
   end
   

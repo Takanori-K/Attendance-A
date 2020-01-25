@@ -18,13 +18,6 @@
       <tbody>
         <% @attendances.each do |day| %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
-          <% if day.worked_approval? %>
-            <%= attendance.hidden_field :started_at,  value: day.approval_started %>
-            <%= attendance.hidden_field :finished_at, value: day.approval_finished %>
-          <% elsif day.worked_denial? %>
-            <%= attendance.hidden_field :started_at,  value: day.denial_started %>
-            <%= attendance.hidden_field :finished_at, value: day.denial_finished %>
-          <% end %>  
           <%= attendance.hidden_field :worked_change, value: "false" %>
           <%= attendance.hidden_field :worked_status, value: "worked_applying" %>
             <tr>
@@ -61,7 +54,9 @@
                   <% if (day.next_day.present? && day.next_day == "true" && day.overtime_change == "true" && day.approval?) || (day.next_day.present? && day.next_day == "true" && day.worked_approval? && day.worked_change == "true") %>
                     <%= working_times_tomorrow(day.applying_started_at, day.applying_finished_at) %>
                   <% else %>
-                    <%= working_times(day.applying_started_at, day.applying_finished_at) %>
+                    <% day.started_at = day.approval_started if day.approval_started.present? && day.worked_approval? && day.worked_change == "true" %>
+                    <% day.finished_at = day.approval_finished if day.approval_finished.present? && day.worked_approval? && day.worked_change == "true"%>
+                    <%= working_times(day.started_at, day.finished_at) %>
                   <% end %>
                 <% end %>  
               </td>
