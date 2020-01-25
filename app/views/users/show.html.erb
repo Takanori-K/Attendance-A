@@ -172,7 +172,7 @@
         </td>
         <td>
           <% if day.started_at.present? && day.finished_at.present? %>
-            <% if day.next_day.present? && day.next_day == "true" && day.overtime_change == "true" && day.approval? %>
+            <% if (day.next_day.present? && day.next_day == "true" && day.overtime_change == "true" && day.approval?) || (day.next_day.present? && day.next_day == "true" && day.worked_approval? && day.worked_change == "true") %>
               <%= str_times = working_times_tomorrow(day.started_at, day.finished_at) %>
             <% else %>  
               <%= str_times = working_times(day.started_at, day.finished_at) %>
