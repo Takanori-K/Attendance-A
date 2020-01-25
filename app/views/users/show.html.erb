@@ -172,7 +172,7 @@
         </td>
         <td>
           <% if day.started_at.present? && day.finished_at.present? %>
-            <% if day.next_day.present? && day.next_day == "true" %>
+            <% if day.next_day.present? && day.next_day == "true" && day.overtime_change == "true" && day.approval? %>
               <%= str_times = working_times_tomorrow(day.started_at, day.finished_at) %>
             <% else %>  
               <%= str_times = working_times(day.started_at, day.finished_at) %>
@@ -181,10 +181,10 @@
             <% @total_working_times = @total_working_times.to_f + str_times.to_f %>
         </td>
         <td><%= day.note if day.worked_approval? %></td>
-        <td><%= day.scheduled_end_time.to_s(:hour) if day.scheduled_end_time.present? && day.approval? %></td>
-        <td><%= day.scheduled_end_time.to_s(:min) if day.scheduled_end_time.present? && day.approval? %></td>
+        <td><%= day.scheduled_end_time.to_s(:hour) if day.scheduled_end_time.present? && day.approval? && day.overtime_change == "true" %></td>
+        <td><%= day.scheduled_end_time.to_s(:min) if day.scheduled_end_time.present? && day.approval? && day.overtime_change == "true" %></td>
         <td>
-          <% if day.scheduled_end_time.present? && day.user.designated_work_end_time.present? && day.approval? %>
+          <% if day.scheduled_end_time.present? && day.user.designated_work_end_time.present? && day.approval? && day.overtime_change == "true" %>
             <% if day.next_day.present? && day.next_day == "true" %>
               <%= overwork_times_tomorrow(day.scheduled_end_time, day.user.designated_work_end_time) %>
             <% elsif day.next_day.present? && day.next_day == "false" %>  
@@ -198,9 +198,9 @@
             <% if day.applying? || (day.approval? && day.overtime_change == "false") || (day.denial? && day.overtime_change == "false") %>
               <span><%= day.instructor_sign %>へ残業申請中&emsp;</span>
             <% elsif day.approval? && day.overtime_change == "true" %>
-              <span>残業承認済&emsp;</span>
+              <span><%= day.instructor_sign %>から残業承認済&emsp;</span>
             <% elsif day.denial? && day.overtime_change == "true" %>
-              <span>残業否認&emsp;</span>
+              <span><%= day.instructor_sign %>から残業否認&emsp;</span>
             <% end %>  
           <% end %>
           
@@ -208,9 +208,9 @@
             <% if day.worked_applying? && day.applying_started_at.present? && day.applying_finished_at.present? %>
               <span><%= day.worked_request_sign %>へ勤怠編集申請中</span>
             <% elsif day.worked_approval? %>
-              <span>勤怠編集承認済み</span>
+              <span><%= day.worked_request_sign %>から勤怠編集承認済み</span>
             <% elsif day.worked_denial? %>
-              <span>勤怠編集否認</span>
+              <span><%= day.worked_request_sign %>から勤怠編集否認</span>
             <% end %>
           <% end %>  
         </td>

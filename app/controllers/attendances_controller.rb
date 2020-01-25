@@ -2,9 +2,10 @@ class AttendancesController < ApplicationController
   
   before_action :set_user,       only: [:edit_one_month, :update_one_month, :edit_overtime_work, :update_overtime_work, :update_one_month_info, :worked_log]
   before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overtime_work, :update_overtime_work]
-  before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month, :worked_log]
+  before_action :correct_user,   only: [:edit_overtime_work, :update_overtime_work, :worked_log]
+  before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :set_one_month,  only: [:edit_one_month, :update_one_month_info, :worked_log]
-  before_action :superior_user, only: [:edit_overtime_work_info, :update_overtime_work, :edit_month_work_info, :update_month_work_info, :edit_worked_info, :update_worked_info]
+  before_action :superior_user, only: [:edit_overtime_work_info, :edit_month_work_info, :update_month_work_info, :edit_worked_info, :update_worked_info]
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
   def update

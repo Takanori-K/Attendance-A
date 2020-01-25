@@ -58,7 +58,7 @@
               <td><%= attendance.check_box :next_day, {:checked => false}, "true", "false" %></td>
               <td>
                 <% if day.started_at.present? && day.finished_at.present? %>
-                  <% if day.next_day.present? && day.next_day == "true" %>
+                  <% if day.next_day.present? && day.next_day == "true" && day.overtime_change == "true" %>
                     <%= working_times_tomorrow(day.applying_started_at, day.applying_finished_at) %>
                   <% else %>
                     <%= working_times(day.applying_started_at, day.applying_finished_at) %>
