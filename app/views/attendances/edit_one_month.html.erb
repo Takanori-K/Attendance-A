@@ -48,7 +48,13 @@
                     <%= attendance.time_field :applying_finished_at, class: "form-control" %>
                 </td>
               <% end %> 
-              <td><%= attendance.check_box :next_day, {:checked => false}, "true", "false" %></td>
+              <td>
+                <% if Date.current < day.worked_on %>
+                  <%= attendance.check_box :next_day, {:checked => false, :disabled => true}, "true", "false"  %>
+                <% else %>
+                  <%= attendance.check_box :next_day, {:checked => false}, "true", "false"  %>
+                <% end %>  
+              </td>
               <td>
                 <% if day.started_at.present? && day.finished_at.present? %>
                   <% if (day.next_day.present? && day.next_day == "true" && day.overtime_change == "true" && day.approval?) || (day.next_day.present? && day.next_day == "true" && day.worked_approval? && day.worked_change == "true") %>
@@ -63,10 +69,16 @@
               <td>
                 <% if Date.current < day.worked_on %>
                   <%= attendance.text_field :note, readonly: true, class: "form-control" %>
+                <% else %>
+                  <%= attendance.text_field :note, class: "form-control" %>
                 <% end %>
               </td>
               <td>
-                <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %>
+                <% if Date.current < day.worked_on %>
+                  <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true}, {:disabled => true, class: "form-control"} %>
+                <% else %>
+                  <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %>
+                <% end %>  
               </td>
             </tr>
           <% end %>    
