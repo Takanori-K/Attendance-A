@@ -37,15 +37,15 @@ class AttendancesController < ApplicationController
   end
   
   def update_one_month
-    ActiveRecord::Base.transaction do
+    ActiveRecord::Base.transaction do # トランザクションを開始します。
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
         attendance.update_attributes!(item)
       end
     end
-    flash[:success] = "勤怠変更申請を送信しました。"
+    flash[:success] = "1ヶ月分の勤怠変更を申請しました。"
     redirect_to user_url(date: params[:date])
-  rescue ActiveRecord::RecordInvalid
+  rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
     flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end
@@ -94,7 +94,7 @@ class AttendancesController < ApplicationController
         attendance.update_attributes!(item)
       end
     end
-      flash[:success] = "残業申請の変更を送信しました。"
+      flash[:success] = "変更にチェック済みの残業申請の変更を送信しました。"
       redirect_to user_url(current_user)
   rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更にチェックを入れてください。"
@@ -106,7 +106,7 @@ class AttendancesController < ApplicationController
     @attendance = @user.attendances.find_by(user_id: @user.id, worked_on: @first_day)
     if params[:user][:attendances][:one_month_sign].present?
       @attendance.update_attributes(month_params)
-      flash[:success] = "1ヶ月分の勤怠承認を申請しました。"
+      flash[:success] = "１ヵ月分の勤怠承認を申請しました。"
       redirect_to user_path(@user, date: @first_day)
     else
       flash[:danger] = "所属長を選択してください。"
@@ -128,7 +128,7 @@ class AttendancesController < ApplicationController
         attendance.update_attributes!(item)
       end
     end
-      flash[:success] = "１ヵ月分の勤怠変更を送信しました。"
+      flash[:success] = "変更にチェック済みの勤怠承認を送信しました。"
       redirect_to user_url(current_user)
   rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更にチェックを入れてください。"
@@ -147,7 +147,7 @@ class AttendancesController < ApplicationController
       attendance = Attendance.find(id)
       attendance.update_attributes!(item)
      end
-      flash[:success] = "勤怠変更を送信しました。"
+      flash[:success] = "変更にチェック済みの勤怠変更を送信しました。"
       redirect_to user_url(current_user)
   end
   

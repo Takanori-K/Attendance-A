@@ -21,8 +21,13 @@
 }
 
 /*拠点情報一覧テーブル*/
-.base-table {
-  vertical-align: middle;
-  text-align: center;
+#base-table {
+  th {
+    vertical-align: middle;
+    text-align: center;
+  }
+  td {
+    vertical-align: middle;
+    text-align: center;
+  }
 }
-

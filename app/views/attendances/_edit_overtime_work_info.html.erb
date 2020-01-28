@@ -1,3 +1,5 @@
+<% provide(:class_text, 'request-info') %>
+
 <div class="modal-dialog modal-lg modal-dialog-center">
   <div class="modal-content">
     <div class="modal-header">
@@ -11,7 +13,7 @@
       <% @users.each do |user| %>
       <% count = 1 %>
         <% attendances = Attendance.where(user_id: user.id, instructor_sign: current_user.name, overtime_change: "false").
-                       or(Attendance.where(user_id: user.id, instructor_sign: current_user.name, overtime_change: "true", overtime_status: 0)).order(created_at: :asc) %>
+                       or(Attendance.where(user_id: user.id, instructor_sign: current_user.name, overtime_change: "true", overtime_status: 0)).order(:worked_on) %>
         <% if attendances.present? && count == 1 %>
           <h3 class="modal-title">【<%= user.name %>からの残業申請】</h3>
               <table class="table table-bordered table-condensed" id ="table-attendances">
@@ -73,6 +75,9 @@
     </div>
     <div class="center">
       <%= f.submit "変更を送信する", class: "btn btn-lg btn-primary" %>
+      <button type="button" class="btn btn-lg btn-default btn-<%= yield(:class_text) %>" data-dismiss="modal">
+                キャンセル
+      </button>
     </div>  
     <% end %>
   </div>

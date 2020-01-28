@@ -9,6 +9,22 @@ module AttendancesHelper
     end
   end
   
+  def attendances_invalid?
+    attendances = true
+    attendances_params.each do |id, item|
+      if item[:applying_started_at].blank? && item[:applying_finished_at].blank?
+        next
+      elsif item[:applying_started_at].blank? || item[:applying_finished_at].blank?
+        attendances = false
+        break
+      elsif item[:applying_started_at] > item[:applying_finished_at] && item[:next_day] == "false"
+        attendances = false
+        break
+      end
+    end
+    return attendances
+  end
+  
   def working_times(start, finish)
     format("%.2f", (((finish - start) / 60) / 60.0))
   end

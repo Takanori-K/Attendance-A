@@ -238,7 +238,11 @@
             
             <%= f.fields_for "attendances", day do |attendance| %>
               <% if current_user?(@user) %>
-                <%= attendance.select :one_month_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %><br>
+                <% if Date.current < day.worked_on %>
+                  <%= attendance.select :one_month_sign, @superiors.pluck(:name), {:include_blank => true}, {:disabled => true, class: "form-control"} %><br>
+                <% else %>
+                  <%= attendance.select :one_month_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %><br>
+                <% end %>  
                 <%= attendance.hidden_field :worked_month, :value => @first_day %>
                 <%= attendance.hidden_field :month_status, value: "month_applying" %>
                 <%= attendance.hidden_field :month_change, value: "false" %>
