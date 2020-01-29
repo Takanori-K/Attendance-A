@@ -8,9 +8,9 @@ class Attendance < ApplicationRecord
   
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid
-  validate :applying_started_at_is_invalid_without_a_applying_finished_at
-  validate :applying_finished_at_is_invalid_without_a_applying_started_at
-  validate :applying_started_at_than_applying_finished_at_fast_if_invalid
+  #validate :applying_started_at_is_invalid_without_a_applying_finished_at
+  #validate :applying_finished_at_is_invalid_without_a_applying_started_at
+  #validate :applying_started_at_than_applying_finished_at_fast_if_invalid
   #validate :overtime_change?
   #validate :month_request_change?
   #validate :worked_request_change?
@@ -40,7 +40,9 @@ class Attendance < ApplicationRecord
   
   #編集時間
   def applying_finished_at_is_invalid_without_a_applying_started_at
-    errors.add(:applying_started_at,"が必要です。") if applying_started_at.blank? && applying_finished_at.present?
+    if worked_request_sign.present?
+      errors.add(:applying_started_at,"が必要です。") if applying_started_at.blank? && applying_finished_at.blank?
+    end  
   end
   
   #編集時間

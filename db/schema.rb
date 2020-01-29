@@ -60,14 +60,14 @@ ActiveRecord::Schema.define(version: 20200118025346) do
     t.string "remember_digest"
     t.boolean "admin", default: false
     t.string "affiliation"
-    t.datetime "basic_time", default: "2020-01-24 23:00:00"
-    t.datetime "work_time", default: "2020-01-24 22:30:00"
+    t.datetime "basic_time", default: "2020-01-28 23:00:00"
+    t.datetime "work_time", default: "2020-01-28 22:30:00"
     t.boolean "superior", default: false
     t.string "employee_number"
-    t.datetime "designated_work_start_time", default: "2020-01-24 23:00:00"
-    t.datetime "designated_work_end_time", default: "2020-01-25 10:00:00"
+    t.datetime "designated_work_start_time", default: "2020-01-28 23:00:00"
+    t.datetime "designated_work_end_time", default: "2020-01-29 10:00:00"
     t.string "uid"
-    t.datetime "basic_work_time", default: "2020-01-24 23:00:00"
+    t.datetime "basic_work_time", default: "2020-01-28 23:00:00"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

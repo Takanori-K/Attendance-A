@@ -7,7 +7,7 @@ User.create!(name:  "管理者",
              admin: true)
 
 User.create!(name: "上長A",
-             email: "email1@gmail.com",
+             email: "email2@sample.com",
              password:              "password",
              password_confirmation: "password",
              employee_number:       "2",
@@ -15,7 +15,7 @@ User.create!(name: "上長A",
              superior: true)
 
 User.create!(name: "上長B",
-             email: "email2@gmail.com",
+             email: "email3@sample.com",
              password:              "password",
              password_confirmation: "password",
              employee_number:       "3",
@@ -23,7 +23,7 @@ User.create!(name: "上長B",
              superior: true)
 
 User.create!(name: "一般",
-             email: "email3@gmail.com",
+             email: "email4@sample.com",
              password:              "password",
              password_confirmation: "password",
              employee_number:       "4",
