@@ -45,7 +45,7 @@ class AttendancesController < ApplicationController
       flash[:success] = "1ヶ月分の勤怠変更を申請しました。"
       redirect_to user_url(date: params[:date])
     else
-      flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
+      flash[:danger] = "不正な時間入力、または未入力、もしくは上長が選択されていません。"
       redirect_to attendances_edit_one_month_user_url(date: params[:date])
     end
   end
@@ -106,7 +106,7 @@ class AttendancesController < ApplicationController
     @attendance = @user.attendances.find_by(user_id: @user.id, worked_on: @first_day)
     if params[:user][:attendances][:one_month_sign].present?
       @attendance.update_attributes(month_params)
-      flash[:success] = "１ヵ月分の勤怠承認を申請しました。"
+      flash[:success] = "#{l(@attendance.worked_month, format: :middle)}の勤怠承認を申請しました。"
       redirect_to user_path(@user, date: @first_day)
     else
       flash[:danger] = "所属長を選択してください。"
