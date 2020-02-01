@@ -15,6 +15,9 @@ module AttendancesHelper
       if item[:applying_started_at].blank? && item[:applying_finished_at].blank? && item[:worked_request_sign].present?
         attendances = false
         break
+      elsif item[:note].blank? && item[:worked_request_sign].present?
+        attendances = false
+        break
       elsif (item[:applying_started_at].blank? || item[:applying_finished_at].blank?) && item[:worked_request_sign].present?
         attendances = false
         break

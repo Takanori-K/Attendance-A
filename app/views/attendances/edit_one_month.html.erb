@@ -15,9 +15,14 @@
           <th>指示者確認㊞</th>
         </tr>
       </thead>
+      <p>※勤怠変更申請をする際は、出勤、退勤、備考、指示者確認が<font color="Red">【必須】</font>になります。</p>
       <tbody>
         <% @attendances.each do |day| %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
+          <% if day.worked_approval? %>
+            <%= attendance.hidden_field :started_at, value: day.approval_started %>
+            <%= attendance.hidden_field :finished_at, value: day.approval_finished %>
+          <% end %>  
           <%= attendance.hidden_field :worked_change, value: "false" %>
           <%= attendance.hidden_field :worked_status, value: "worked_applying" %>
             <tr>
@@ -51,6 +56,8 @@
               <td>
                 <% if Date.current < day.worked_on %>
                   <%= attendance.check_box :next_day, {:checked => false, :disabled => true}, "true", "false"  %>
+                <% elsif day.next_day.present? && day.next_day == "true" %>
+                  <%= attendance.check_box :next_day, {:checked => true}, "true", "false"  %>
                 <% else %>
                   <%= attendance.check_box :next_day, {:checked => false}, "true", "false"  %>
                 <% end %>  
