@@ -64,12 +64,15 @@
               </td>
               <td>
                 <% if day.started_at.present? && day.finished_at.present? %>
-                  <% if (day.next_day.present? && day.next_day == "true" && day.overtime_change == "true" && day.approval?) || (day.next_day.present? && day.next_day == "true" && day.worked_approval? && day.worked_change == "true") %>
+                  <% if day.next_day.present? && day.next_day == "true" && day.worked_approval? && day.worked_change == "true" %>
+                    <%= working_times_tomorrow(day.applying_started_at, day.applying_finished_at) %>
+                  <% elsif (day.next_day.present? && day.next_day == "true" && day.worked_applying? && day.approval_date.present?) || (day.next_day.present? && day.next_day == "true" && day.worked_denial? && day.worked_change == "true" && day.approval_date.present?) || 
+                           (day.next_day.present? && day.next_day == "true" && day.worked_approval? && day.approval_date.present?) %>
                     <%= working_times_tomorrow(day.applying_started_at, day.applying_finished_at) %>
                   <% else %>
                     <% day.started_at = day.approval_started if day.approval_started.present? && day.worked_approval? && day.worked_change == "true" %>
                     <% day.finished_at = day.approval_finished if day.approval_finished.present? && day.worked_approval? && day.worked_change == "true"%>
-                    <%= working_times(day.started_at, day.finished_at) %>
+                    <%= working_times(day.applying_started_at, day.applying_finished_at) %>
                   <% end %>
                 <% end %>  
               </td>

@@ -21,28 +21,30 @@
       </tr>
     </thead>
     <tbody>
-        <% @attendances_search.each do |day| %> 
-          <tr>
-            <td><%= day.worked_on %></td>
-            <td>
-              <% if day.started_at.blank? %>
-                <%= day.started_at %>
-              <% else %>
-                <%= day.started_at.to_s(:time) %>
-              <% end %>  
-            </td>
-            <td>
-              <% if day.finished_at.blank? %>
-                <%= day.finished_at %>
-              <% else %>  
-                <%= day.finished_at.to_s(:time) %>
-              <% end %>  
-            </td>
-            <td><%= day.approval_started.to_s(:time) %></td>
-            <td><%= day.approval_finished.to_s(:time) %></td>
-            <td><%= day.worked_request_sign %></td>
-            <td><%= l(day.approval_date) %></td>
-          </tr>
+        <% @attendances_search.each do |day| %>
+          <% if day.worked_approval? && day.worked_change == "true" %>
+            <tr>
+              <td><%= day.worked_on %></td>
+              <td>
+                <% if day.started_at.blank? %>
+                  <%= day.started_at %>
+                <% else %>
+                  <%= day.started_at.to_s(:time) %>
+                <% end %>  
+              </td>
+              <td>
+                <% if day.finished_at.blank? %>
+                  <%= day.finished_at %>
+                <% else %>  
+                  <%= day.finished_at.to_s(:time) %>
+                <% end %>  
+              </td>
+              <td><%= day.approval_started.to_s(:time) %></td>
+              <td><%= day.approval_finished.to_s(:time) %></td>
+              <td><%= day.worked_request_sign %></td>
+              <td><%= l(day.approval_date) %></td>
+            </tr>
+          <% end %>  
         <% end %>
     </tbody>
   </table>  
