@@ -42,13 +42,13 @@
                 <td><%= attendance.time_field :applying_finished_at, readonly: true, class: "form-control" %></td>
               <% else %>
                 <td>
-                  <% if day.denial_started.present? && day.worked_denial? && day.worked_change == "true" %>
+                  <% if day.denial_started.present? && day.worked_request_sign.blank? && (day.worked_denial? || day.worked_applying?) %>
                     <% day.applying_started_at = day.denial_started %>
                   <% end %>  
                     <%= attendance.time_field :applying_started_at, class: "form-control" %>
                 </td>
                 <td>
-                  <% if day.denial_finished.present? && day.worked_denial? && day.worked_change == "true" %>
+                  <% if day.denial_finished.present? && day.worked_request_sign.blank? && (day.worked_denial? || day.worked_applying?) %>
                     <% day.applying_finished_at = day.denial_finished %>
                   <% end %>  
                     <%= attendance.time_field :applying_finished_at, class: "form-control" %>
@@ -81,14 +81,27 @@
                 <% if Date.current < day.worked_on %>
                   <%= attendance.text_field :edit_note, readonly: true, class: "form-control" %>
                 <% else %>
-                  <%= attendance.text_field :edit_note, class: "form-control" %>
+                  <% if (day.worked_denial? || day.worked_applying?) && day.worked_request_sign.blank? %>
+                    <% day.edit_note = day.note %>
+                    <%= attendance.text_field :edit_note, class: "form-control" %>
+                  <% elsif day.worked_denial? && day.worked_change == "true" %>
+                    <% day.edit_note = day.note %>
+                    <%= attendance.text_field :edit_note, class: "form-control" %>
+                  <% else %>  
+                    <%= attendance.text_field :edit_note, class: "form-control" %>
+                  <% end %>  
                 <% end %>
               </td>
               <td>
                 <% if Date.current < day.worked_on %>
                   <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true}, {:disabled => true, class: "form-control"} %>
                 <% else %>
-                  <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %>
+                  <% if day.worked_change == "true" %>
+                    <% day.worked_request_sign = nil %>
+                    <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true, selected: 0}, {class: "form-control"} %>
+                  <% else %>
+                    <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %>
+                  <% end %>  
                 <% end %>  
               </td>
             </tr>

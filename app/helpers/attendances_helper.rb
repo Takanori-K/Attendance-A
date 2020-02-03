@@ -15,7 +15,7 @@ module AttendancesHelper
       if item[:applying_started_at].blank? && item[:applying_finished_at].blank? && item[:worked_request_sign].present?
         attendances = false
         break
-      elsif item[:note].blank? && item[:worked_request_sign].present?
+      elsif item[:edit_note].blank? && item[:worked_request_sign].present?
         attendances = false
         break
       elsif (item[:applying_started_at].blank? || item[:applying_finished_at].blank?) && item[:worked_request_sign].present?
@@ -28,7 +28,7 @@ module AttendancesHelper
     end
     return attendances
   end
-  
+        
   def working_times(start, finish)
     format("%.2f", (((finish - start) / 60) / 60.0))
   end

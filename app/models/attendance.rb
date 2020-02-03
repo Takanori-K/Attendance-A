@@ -3,6 +3,7 @@ class Attendance < ApplicationRecord
   
   validates :worked_on, presence: true
   validates :note, length: { maximum: 50 }
+  validates :edit_note, length: { maximum: 50 }
   #validates_acceptance_of :agreement, allow_nil: false, on: :update
 
   
