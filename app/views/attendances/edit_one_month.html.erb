@@ -20,9 +20,10 @@
         <% @attendances.each do |day| %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
           <% if day.worked_approval? %>
-            <%= attendance.hidden_field :started_at, value: day.approval_started %>
+            <%= attendance.hidden_field :started_at,  value: day.approval_started %>
             <%= attendance.hidden_field :finished_at, value: day.approval_finished %>
-          <% end %>  
+            <%= attendance.hidden_field :note,        value: day.edit_note %>
+          <% end %>
           <%= attendance.hidden_field :worked_change, value: "false" %>
           <%= attendance.hidden_field :worked_status, value: "worked_applying" %>
             <tr>
@@ -78,9 +79,9 @@
               </td>
               <td>
                 <% if Date.current < day.worked_on %>
-                  <%= attendance.text_field :note, readonly: true, class: "form-control" %>
+                  <%= attendance.text_field :edit_note, readonly: true, class: "form-control" %>
                 <% else %>
-                  <%= attendance.text_field :note, class: "form-control" %>
+                  <%= attendance.text_field :edit_note, class: "form-control" %>
                 <% end %>
               </td>
               <td>

@@ -72,7 +72,7 @@
                         <td><%= at.applying_started_at.to_s(:min) if at.applying_started_at.present? %></td>
                         <td><%= at.applying_finished_at.to_s(:hour) if at.applying_finished_at.present? %></td>
                         <td><%= at.applying_finished_at.to_s(:min) if at.applying_finished_at.present? %></td>
-                        <td><%= at.note %></td>
+                        <td><%= at.edit_note %></td>
                         <td>
                           <%= attendance.select :worked_status, Attendance.worked_statuses_i18n.invert, {}, {class: "form-control"} %>
                         </td>

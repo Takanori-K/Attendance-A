@@ -184,7 +184,11 @@
             <% @total_working_times = @total_working_times.to_f + str_times.to_f %>
         </td>
         <td>
-          <%= day.note if (day.worked_approval? && day.worked_change == "true") %>
+          <% if day.worked_approval? && day.worked_change == "true" %>
+            <%= day.edit_note %>
+          <% else %>
+            <%= day.note %>
+          <% end %>  
         </td>
         <td><%= day.scheduled_end_time.to_s(:hour) if day.scheduled_end_time.present? && day.approval? && day.overtime_change == "true" %></td>
         <td><%= day.scheduled_end_time.to_s(:min) if day.scheduled_end_time.present? && day.approval? && day.overtime_change == "true" %></td>
