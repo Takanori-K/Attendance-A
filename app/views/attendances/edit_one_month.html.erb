@@ -19,11 +19,11 @@
       <tbody>
         <% @attendances.each do |day| %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
-          <% if day.worked_approval? %>
+          <% if day.worked_approval? && day.worked_change == "true" %>
             <%= attendance.hidden_field :started_at,  value: day.approval_started %>
             <%= attendance.hidden_field :finished_at, value: day.approval_finished %>
             <%= attendance.hidden_field :note,        value: day.edit_note %>
-          <% end %>
+          <% end %>  
           <%= attendance.hidden_field :worked_change, value: "false" %>
           <%= attendance.hidden_field :worked_status, value: "worked_applying" %>
             <tr>
@@ -42,15 +42,15 @@
                 <td><%= attendance.time_field :applying_finished_at, readonly: true, class: "form-control" %></td>
               <% else %>
                 <td>
-                  <% if day.denial_started.present? && day.worked_request_sign.blank? && (day.worked_denial? || day.worked_applying?) %>
-                    <% day.applying_started_at = day.denial_started %>
-                  <% end %>  
+                  <% if day.worked_request_sign.blank? || (day.worked_denial? && day.worked_change == "true") %>
+                    <% day.applying_started_at = day.started_at %>
+                  <% end %>
                     <%= attendance.time_field :applying_started_at, class: "form-control" %>
                 </td>
                 <td>
-                  <% if day.denial_finished.present? && day.worked_request_sign.blank? && (day.worked_denial? || day.worked_applying?) %>
-                    <% day.applying_finished_at = day.denial_finished %>
-                  <% end %>  
+                  <% if day.worked_request_sign.blank? || (day.worked_denial? && day.worked_change == "true") %>
+                    <% day.applying_finished_at = day.finished_at %>
+                  <% end %>
                     <%= attendance.time_field :applying_finished_at, class: "form-control" %>
                 </td>
               <% end %> 
@@ -64,24 +64,19 @@
                 <% end %>  
               </td>
               <td>
-                <% if day.started_at.present? && day.finished_at.present? %>
-                  <% if day.next_day.present? && day.next_day == "true" && day.worked_approval? && day.worked_change == "true" %>
-                    <%= working_times_tomorrow(day.applying_started_at, day.applying_finished_at) %>
-                  <% elsif (day.next_day.present? && day.next_day == "true" && day.worked_applying? && day.approval_date.present?) || (day.next_day.present? && day.next_day == "true" && day.worked_denial? && day.worked_change == "true" && day.approval_date.present?) || 
-                           (day.next_day.present? && day.next_day == "true" && day.worked_approval? && day.approval_date.present?) %>
+                <% if day.applying_started_at.present? && day.applying_finished_at.present? %>
+                  <% if day.next_day.present? && day.next_day == "true" %>
                     <%= working_times_tomorrow(day.applying_started_at, day.applying_finished_at) %>
                   <% else %>
-                    <% day.started_at = day.approval_started if day.approval_started.present? && day.worked_approval? && day.worked_change == "true" %>
-                    <% day.finished_at = day.approval_finished if day.approval_finished.present? && day.worked_approval? && day.worked_change == "true"%>
                     <%= working_times(day.applying_started_at, day.applying_finished_at) %>
-                  <% end %>
+                  <% end %>  
                 <% end %>  
               </td>
               <td>
                 <% if Date.current < day.worked_on %>
                   <%= attendance.text_field :edit_note, readonly: true, class: "form-control" %>
                 <% else %>
-                  <% if (day.worked_denial? || day.worked_applying?) && day.worked_request_sign.blank? %>
+                  <% if day.worked_request_sign.blank? %>
                     <% day.edit_note = day.note %>
                     <%= attendance.text_field :edit_note, class: "form-control" %>
                   <% elsif day.worked_denial? && day.worked_change == "true" %>
