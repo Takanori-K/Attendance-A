@@ -184,6 +184,7 @@
         </td>
         <td>
           <% if day.scheduled_end_time.present? && day.approval? && day.overtime_change == "true" %>
+            <% day.approval_end_time = day.scheduled_end_time %>
             <%= day.scheduled_end_time.to_s(:hour) %>
           <% elsif day.approval_end_time.present? %>
             <%= day.approval_end_time.to_s(:hour) %>
@@ -191,6 +192,7 @@
         </td>
         <td>
           <% if day.scheduled_end_time.present? && day.approval? && day.overtime_change == "true" %>
+            <% day.approval_end_time = day.scheduled_end_time %>
             <%= day.scheduled_end_time.to_s(:min) %>
           <% elsif day.approval_end_time.present? %>
             <%= day.approval_end_time.to_s(:min) %>
@@ -199,9 +201,15 @@
         <td>
           <% if day.scheduled_end_time.present? && day.user.designated_work_end_time.present? && day.approval? && day.overtime_change == "true" %>
             <% if day.next_day.present? && day.next_day == "true" %>
-              <%= overwork_times_tomorrow(day.scheduled_end_time, day.user.designated_work_end_time) %>
+              <%= overwork_times_tomorrow(day.approval_end_time, day.user.designated_work_end_time) %>
             <% elsif day.next_day.present? && day.next_day == "false" %>  
-              <%= overwork_times(day.scheduled_end_time, day.user.designated_work_end_time) %>
+              <%= overwork_times(day.approval_end_time, day.user.designated_work_end_time) %>
+            <% end %>
+          <% elsif day.approval_end_time.present? %>
+            <% if day.edit_next_day.present? && day.edit_next_day == "true" %>
+              <%= overwork_times_tomorrow(day.approval_end_time, day.user.designated_work_end_time) %>
+            <% elsif day.edit_next_day.present? && day.edit_next_day == "false" %>
+              <%= overwork_times(day.approval_end_time, day.user.designated_work_end_time) %>
             <% end %>  
           <% end %>
         </td>

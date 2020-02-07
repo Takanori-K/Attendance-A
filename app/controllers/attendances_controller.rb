@@ -158,7 +158,7 @@ class AttendancesController < ApplicationController
     end
     
     def overtime_params
-      params.require(:attendance).permit(:scheduled_end_time, :next_day, :business_description, :instructor_sign, :overtime_status, :overtime_change, :approval_business_description, :approval_end_time)
+      params.require(:attendance).permit(:scheduled_end_time, :next_day, :edit_next_day, :business_description, :instructor_sign, :overtime_status, :overtime_change, :approval_business_description, :approval_end_time)
     end
     
     def overtimes_params
