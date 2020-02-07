@@ -181,8 +181,20 @@
             <%= day.note %>
           <% end %>  
         </td>
-        <td><%= day.scheduled_end_time.to_s(:hour) if day.scheduled_end_time.present? && day.approval? && day.overtime_change == "true" %></td>
-        <td><%= day.scheduled_end_time.to_s(:min) if day.scheduled_end_time.present? && day.approval? && day.overtime_change == "true" %></td>
+        <td>
+          <% if day.scheduled_end_time.present? && day.approval? && day.overtime_change == "true" %>
+            <%= day.scheduled_end_time.to_s(:hour) %>
+          <% elsif day.approval_end_time.present? %>
+            <%= day.approval_end_time.to_s(:hour) %>
+          <% end %>  
+        </td>
+        <td>
+          <% if day.scheduled_end_time.present? && day.approval? && day.overtime_change == "true" %>
+            <%= day.scheduled_end_time.to_s(:min) %>
+          <% elsif day.approval_end_time.present? %>
+            <%= day.approval_end_time.to_s(:min) %>
+          <% end %>
+        </td>
         <td>
           <% if day.scheduled_end_time.present? && day.user.designated_work_end_time.present? && day.approval? && day.overtime_change == "true" %>
             <% if day.next_day.present? && day.next_day == "true" %>
@@ -192,7 +204,13 @@
             <% end %>  
           <% end %>
         </td>
-        <td><%= day.business_description if day.approval? && day.overtime_change == "true" %></td>
+        <td>
+          <% if day.approval? && day.overtime_change == "true" %>
+            <%= day.business_description %>
+          <% elsif day.approval_business_description.present? %>
+            <%= day.approval_business_description %>
+          <% end %>  
+        </td>
         <td>
           <% if day.instructor_sign.present? %>
             <% if day.applying? || (day.approval? && day.overtime_change == "false") || (day.denial? && day.overtime_change == "false") %>
