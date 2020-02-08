@@ -21,7 +21,7 @@ module AttendancesHelper
       elsif (item[:applying_started_at].blank? || item[:applying_finished_at].blank?) && item[:worked_request_sign].present?
         attendances = false
         break
-      elsif (item[:applying_started_at] > item[:applying_finished_at]) && item[:next_day] == "false" && item[:worked_request_sign].present?
+      elsif (item[:applying_started_at] > item[:applying_finished_at]) && item[:edit_tomorrow] == "false" && item[:worked_request_sign].present?
         attendances = false
         break
       end

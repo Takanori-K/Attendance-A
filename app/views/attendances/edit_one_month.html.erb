@@ -92,7 +92,7 @@
                 <% if Date.current < day.worked_on %>
                   <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true}, {:disabled => true, class: "form-control"} %>
                 <% else %>
-                  <% if day.worked_change == "true" %>
+                  <% if (day.worked_approval? || day.worked_denial?) && day.worked_change == "true" %>
                     <% day.worked_request_sign = nil %>
                     <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true, selected: 0}, {class: "form-control"} %>
                   <% else %>
