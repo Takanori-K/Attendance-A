@@ -4,18 +4,10 @@ class Attendance < ApplicationRecord
   validates :worked_on, presence: true
   validates :note, length: { maximum: 50 }
   validates :edit_note, length: { maximum: 50 }
-  #validates_acceptance_of :agreement, allow_nil: false, on: :update
 
   
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid
-  #validate :applying_started_at_is_invalid_without_a_applying_finished_at
-  #validate :applying_finished_at_is_invalid_without_a_applying_started_at
-  #validate :applying_started_at_than_applying_finished_at_fast_if_invalid
-  #validate :overtime_change?
-  #validate :month_request_change?
-  #validate :worked_request_change?
-  #validate :month_change_request_sign
   validate :worked_request_sign_and_started_at_than_finished_at_fast_if_invalid
   validate :worked_request_sign_and_finished_at_is_invalid_without_a_started_at
   validate :worked_request_sign_and_started_at_is_invalid_without_a_finished_at
