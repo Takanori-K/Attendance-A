@@ -66,7 +66,7 @@
               </td>
               <td>
                 <% if day.applying_started_at.present? && day.applying_finished_at.present? %>
-                  <% if day.edit_tomorrow.present? && day.edit_tomorrow == "true" %>
+                  <% if (day.edit_tomorrow.present? && day.edit_tomorrow == "true") || (day.tomorrow.present? && day.tomorrow == "true" && day.worked_request_sign.blank?) %>
                     <%= working_times_tomorrow(day.applying_started_at, day.applying_finished_at) %>
                   <% else %>
                     <%= working_times(day.applying_started_at, day.applying_finished_at) %>
