@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   end
   
   def index
-    @users = User.where.not(admin: true)
+    @users = User.where.not(admin: true).order(:id)
   end
   
   def admin_update
@@ -88,7 +88,11 @@ class UsersController < ApplicationController
   def update
     if @user.update_attributes(user_params)
       flash[:success] = "ユーザー情報を更新しました。"
-      redirect_to @user
+      if @user.admin?
+        redirect_to users_url
+      else  
+        redirect_to @user
+      end
     else
       render :edit
     end
