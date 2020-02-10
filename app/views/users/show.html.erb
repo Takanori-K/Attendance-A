@@ -35,7 +35,7 @@
   <% if current_user.superior? %>
     <% if @month.present? || @month_2.present? %>
       <div class="month-info">
-        <%= link_to "【所属長承認申請のお知らせ】", edit_month_work_info_path(user_id: @user.id, id: @attendance.id, date: @first_day), remote: true, style: "color:red" %>
+        <%= link_to "【所属長承認申請のお知らせ】", edit_month_work_info_path(user_id: @user.id, id: @attendance.id), remote: true, style: "color:red" %>
         <font color="red"><%= @month_count.to_i + @month_2_count.to_i %>件の通知があります</font>
       </div>
     <% else %>
