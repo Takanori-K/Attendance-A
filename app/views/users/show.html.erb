@@ -105,7 +105,7 @@
       <tr>
         <td>
           <% if current_user?(@user) %>
-            <%= link_to "残業申請", edit_overtime_path(@user, params:{day: day.worked_on, youbi: $days_of_the_week[day.worked_on.wday]}), remote: true, class: "btn btn-primary" %>
+            <%= link_to "残業申請", edit_overtime_path(@user, params:{day: day.worked_on, youbi: $days_of_the_week[day.worked_on.wday]}), remote: true, class: "btn btn-primary #{"disabled" if Date.current < day.worked_on}" %>
           <% end %>  
         </td>
         <td><%= l(day.worked_on, format: :short) %></td>
