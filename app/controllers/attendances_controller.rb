@@ -42,10 +42,10 @@ class AttendancesController < ApplicationController
         attendance = Attendance.find(id)
         attendance.update_attributes!(item)
       end
-      flash[:success] = "1ヶ月分の勤怠変更を申請しました。"
+      flash[:success] = "必須項目記入済みの勤怠変更を申請しました。"
       redirect_to user_url(date: params[:date])
     else
-      flash[:danger] = "不正な時間入力、または未入力、もしくは上長が選択されていません。"
+      flash[:danger] = "不正な時間入力、または未入力のため勤怠変更を送信できませんでした。"
       redirect_to attendances_edit_one_month_user_url(date: params[:date])
     end
   end

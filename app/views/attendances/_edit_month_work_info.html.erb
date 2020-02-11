@@ -35,7 +35,7 @@
                         </td>
                         <td><%= attendance.check_box :month_change, {:checked => false}, "true", "false" %></td>
                         <td>
-                          <%= link_to "確認", user_path(user), class: "btn btn-primary" %>
+                          <%= link_to "確認", user_path(user, date: at.worked_month), class: "btn btn-primary" %>
                         </td>
                       </tr>
                     <% end %>  
