@@ -58,7 +58,7 @@
               <td>
                 <% if Date.current < day.worked_on %>
                   <%= attendance.check_box :edit_tomorrow, {:checked => false, :disabled => true}, "true", "false"  %>
-                <% elsif day.edit_tomorrow.present? && day.edit_tomorrow == "true" %>
+                <% elsif (day.edit_tomorrow.present? && day.edit_tomorrow == "true") || (day.worked_request_sign.blank? && day.tomorrow == "true") %>
                   <%= attendance.check_box :edit_tomorrow, {:checked => true}, "true", "false"  %>
                 <% else %>
                   <%= attendance.check_box :edit_tomorrow, {:checked => false}, "true", "false"  %>

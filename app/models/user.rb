@@ -69,4 +69,5 @@ class User < ApplicationRecord
     ["id", "name", "email", "affiliation", "employee_number", "uid", "basic_work_time",
      "designated_work_start_time", "designated_work_end_time", "superior", "admin", "password"]
   end
+  
 end
