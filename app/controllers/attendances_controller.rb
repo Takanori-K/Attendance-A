@@ -53,10 +53,10 @@ class AttendancesController < ApplicationController
   def worked_log
     @all_worked_on = Attendance.where(user_id: current_user.id)
     if params[:search].present?
-      @attendances_search = @all_worked_on.where('worked_on LIKE ?', "%#{params[:search]}%").order(:worked_on)
+     @attendances_search = @all_worked_on.where('worked_on LIKE ?', "#{params[:search]}").order(:worked_on)
     else
       @attendances_search = @all_worked_on.where(worked_on: @first_day..@last_day).order(:worked_on)
-    end  
+    end
   end
   
   def edit_overtime_work

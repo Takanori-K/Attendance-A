@@ -1,10 +1,10 @@
 <div>
   <h1>勤怠ログ</h1>
   
-  <%= form_tag(worked_log_path, method: :get) do %>
+  <%= form_with(url: worked_log_path, method: :get, local: true) do |f| %>
     <p>
-      <%= month_field_tag :search %>
-      <%= submit_tag "検索" %>
+      <%= f.month_field :search %>
+      <%= f.submit "検索" %>
     </p>
   <% end %>
   
