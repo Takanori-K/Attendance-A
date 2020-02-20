@@ -65,7 +65,7 @@
 <% if current_user?(@user) %>
   <div class="btn-users-show">
     <%= link_to "１ヶ月の勤怠編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
-    <%= link_to "CSV出力", user_path(format: :csv), class: "btn btn-primary" %><br>
+    <%= link_to "CSV出力", user_path(format: :csv, date: @first_day), class: "btn btn-primary" %><br>
     <%= link_to "勤怠修正ログ（承認済）", worked_log_path(date: @first_day), class: "btn btn-primary" %>
   </div>
 <% end %>
@@ -136,7 +136,7 @@
         </td>
         <td>
           <% if current_user?(@user) %>
-            <% if day.worked_on == Date.today && day.started_at.nil? %>
+            <% if day.worked_on == Date.current && day.started_at.nil? %>
               <%= link_to "出社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary" %>
             <% end %>
           <% end %> 
@@ -159,7 +159,7 @@
         </td>
         <td>
           <% if current_user?(@user) %>
-            <% if day.worked_on == Date.today && day.started_at.present? && day.finished_at.nil? %>
+            <% if day.worked_on == Date.current && day.started_at.present? && day.finished_at.nil? %>
               <%= link_to "退社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary" %>
             <% end %>
           <% end %>

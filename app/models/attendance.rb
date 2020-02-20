@@ -10,7 +10,7 @@ class Attendance < ApplicationRecord
   validate :started_at_than_finished_at_fast_if_invalid
   validate :worked_request_sign_and_started_at_than_finished_at_fast_if_invalid
   validate :worked_request_sign_and_finished_at_is_invalid_without_a_started_at
-  validate :worked_request_sign_and_started_at_is_invalid_without_a_finished_at
+  #validate :worked_request_sign_and_started_at_is_invalid_without_a_finished_at
   
   enum overtime_status: { applying: 0, approval: 1, denial: 2 }
   enum month_status: { month_applying: 0, month_approval: 1, month_denial: 2 }

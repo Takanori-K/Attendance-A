@@ -6,20 +6,27 @@ class UsersController < ApplicationController
   before_action :admin_user,     only: [:index, :import, :destroy, :edit_basic_info, :update_basic_info, :working_employee]
   before_action :set_one_month,  only: :show
   before_action :superior_or_correct_user, only: :show
+  before_action :admin_user_show_edit_one_month, only: :show
   
   def new
     @user = User.new
   end
   
   def index
-    @users = User.where.not(admin: true).order(:id)
+    @users = User.where(admin: [nil, false]).order(:id)
+    if params[:id].present?
+      @user = User.find_by(id: @users.id)
+    else
+      @user = User.new
+    end
   end
   
   def admin_update
+    @users = User.where.not(admin: true).order(:id)
     if @user.update_attributes(users_params)
-      flash[:success] = "#{@user.name}の情報を更新しました。"
+      flash[:success] = "#{@user.name}のアカウント情報の更新に成功しました。"
     else
-      flash[:danger] = "#{@user.name}の情報を更新に失敗しました。<br>" + @user.errors.full_messages.join("<br>")
+      flash[:danger] = "アカウント情報の更新は失敗しました。<br>" + @user.errors.full_messages.join("<br>")
     end
     redirect_to users_url
   end

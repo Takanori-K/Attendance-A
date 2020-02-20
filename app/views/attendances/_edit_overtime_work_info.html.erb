@@ -63,7 +63,7 @@
                           <%= attendance.check_box :overtime_change,  {:checked => false}, "true", "false" %>
                         </td>
                         <td>
-                          <%= link_to "確認", user_path(user, date: at.worked_on), class: "btn btn-primary" %>
+                          <%= link_to "確認", user_path(user, date: l(at.worked_on, format: :long)), class: "btn btn-primary" %>
                         </td>
                       </tr>
                     <% end %>  

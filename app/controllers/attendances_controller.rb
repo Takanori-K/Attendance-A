@@ -2,10 +2,11 @@ class AttendancesController < ApplicationController
   
   before_action :set_user,       only: [:edit_one_month, :update_one_month, :edit_overtime_work, :update_overtime_work, :update_one_month_info, :worked_log]
   before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overtime_work, :update_overtime_work]
-  before_action :correct_user,   only: [:edit_overtime_work, :update_overtime_work, :worked_log]
-  before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
+  before_action :correct_user,   only: [:edit_one_month, :update_one_month, :edit_overtime_work, :update_overtime_work, :worked_log]
+  #before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :set_one_month,  only: [:edit_one_month,:update_one_month_info, :worked_log]
   before_action :superior_user, only: [:edit_overtime_work_info, :edit_month_work_info, :update_month_work_info, :edit_worked_info, :update_worked_info]
+  before_action :admin_user_show_edit_one_month, only: :edit_one_month
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
   def update
@@ -70,13 +71,13 @@ class AttendancesController < ApplicationController
     @user = User.find(params[:attendance][:user_id])
     @attendance = @user.attendances.find(params[:attendance][:id])
     # binding.pry
-    if params[:attendance][:scheduled_end_time].blank? || params[:attendance][:instructor_sign].blank?
+    if params[:attendance][:scheduled_end_time].blank? || params[:attendance][:instructor_sign].blank? || params[:attendance][:business_description].blank?
       flash[:danger] = "必須箇所が空欄です。"
-      redirect_to @user
+      redirect_to user_url(date: @attendance.worked_on)
     else
       @attendance.update_attributes(overtime_params)
       flash[:success] = "残業申請が完了しました。"
-      redirect_to @user and return
+      redirect_to user_url(date: @attendance.worked_on) and return
     end
   end
   
