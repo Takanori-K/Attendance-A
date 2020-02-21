@@ -22,7 +22,7 @@
     </thead>
     <tbody>
         <% @attendances_search.each do |day| %>
-          <% if (day.worked_approval? && day.worked_change == "true") || day.note.present? %>
+          <% if (day.worked_approval? && day.worked_change == "true") || day.edit_request_sign.present? %>
             <tr>
               <td><%= day.worked_on %></td>
               <td>
