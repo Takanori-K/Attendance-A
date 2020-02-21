@@ -154,7 +154,7 @@ class AttendancesController < ApplicationController
   private
     
     def attendances_params
-      params.require(:user).permit(attendances: [:started_at, :finished_at, :applying_started_at, :applying_finished_at, :note, :edit_note, :tomorrow, :edit_tomorrow, :worked_request_sign, :worked_status, :worked_change])[:attendances]
+      params.require(:user).permit(attendances: [:started_at, :finished_at, :applying_started_at, :applying_finished_at, :note, :edit_note, :tomorrow, :edit_tomorrow, :worked_request_sign, :edit_request_sign, :worked_status, :worked_change])[:attendances]
     end
     
     def overtime_params

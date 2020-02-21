@@ -24,7 +24,7 @@
             <%= attendance.hidden_field :finished_at,         value: day.approval_finished %>
             <%= attendance.hidden_field :note,                value: day.edit_note %>
             <%= attendance.hidden_field :tomorrow,            value: day.edit_tomorrow %>
-            <%= attendance.hidden_field :worked_request_sign, value: day.edit_request_sign %>
+            <%= attendance.hidden_field :edit_request_sign,   value: day.worked_request_sign %>
           <% end %>  
           <%= attendance.hidden_field :worked_change, value: "false" %>
           <%= attendance.hidden_field :worked_status, value: "worked_applying" %>
@@ -61,6 +61,8 @@
                   <%= attendance.check_box :edit_tomorrow, {:checked => false, :disabled => true}, "true", "false"  %>
                 <% elsif (day.edit_tomorrow.present? && day.edit_tomorrow == "true") || (day.worked_request_sign.blank? && day.tomorrow == "true") %>
                   <%= attendance.check_box :edit_tomorrow, {:checked => true}, "true", "false"  %>
+                <% elsif day.worked_denial? && day.worked_change == "true" %>
+                  <%= attendance.check_box :edit_tomorrow, {:checked => false}, "true", "false"  %>
                 <% else %>
                   <%= attendance.check_box :edit_tomorrow, {:checked => false}, "true", "false"  %>
                 <% end %>  
@@ -91,13 +93,13 @@
               </td>
               <td>
                 <% if Date.current < day.worked_on %>
-                  <%= attendance.select :edit_request_sign, @superiors.pluck(:name), {:include_blank => true}, {:disabled => true, class: "form-control"} %>
+                  <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true}, {:disabled => true, class: "form-control"} %>
                 <% else %>
                   <% if (day.worked_approval? || day.worked_denial?) && day.worked_change == "true" %>
                     <% day.worked_request_sign = nil %>
-                    <%= attendance.select :edit_request_sign, @superiors.pluck(:name), {:include_blank => true, selected: 0}, {class: "form-control"} %>
+                    <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true, selected: 0}, {class: "form-control"} %>
                   <% else %>
-                    <%= attendance.select :edit_request_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %>
+                    <%= attendance.select :worked_request_sign, @superiors.pluck(:name), {:include_blank => true}, {class: "form-control"} %>
                   <% end %>  
                 <% end %>  
               </td>
