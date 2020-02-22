@@ -159,7 +159,7 @@
         </td>
         <td>
           <% if current_user?(@user) %>
-            <% if day.worked_on == Date.current && day.started_at.present? && day.finished_at.nil? %>
+            <% if day.worked_on == Date.today && day.started_at.present? && day.finished_at.nil? %>
               <%= link_to "退社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary" %>
             <% end %>
           <% end %>
