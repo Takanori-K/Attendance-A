@@ -38,11 +38,15 @@ class AttendancesController < ApplicationController
   end
   
   def update_one_month
-    if attendances_invalid?
-      attendances_params.each do |id, item|
-        attendance = Attendance.find(id)
-        attendance.update_attributes!(item)
+    if attendances_invalid?  #helperメソッド(true or flase)
+      attendances = []
+      params[:user][:attendances].each do |id, item|
+        if item[:worked_request_sign].present?
+          item.new(attendances_params)
+          attendances << item
+        end
       end
+      Attendance.import attendances
       flash[:success] = "必須項目記入済みの勤怠変更を申請しました。"
       redirect_to user_url(date: params[:date])
     else

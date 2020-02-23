@@ -19,17 +19,7 @@
       <tbody>
         <% @attendances.each do |day| %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
-          <% if day.worked_approval? && day.worked_change == "true" %>
-            <%= attendance.hidden_field :started_at,          value: day.approval_started %>
-            <%= attendance.hidden_field :finished_at,         value: day.approval_finished %>
-            <%= attendance.hidden_field :note,                value: day.edit_note %>
-            <%= attendance.hidden_field :tomorrow,            value: day.edit_tomorrow %>
-            <%= attendance.hidden_field :edit_request_sign,   value: day.worked_request_sign %>
-            <%= attendance.hidden_field :denial_started,      value: day.started_at %>
-            <%= attendance.hidden_field :denial_finished,     value: day.finished_at %>
-          <% elsif day.worked_denial? && day.worked_change == "true" %>
-            <%= attendance.hidden_field :denial_request_sign, value: day.worked_request_sign %>
-          <% end %>  
+            
           <%= attendance.hidden_field :worked_change, value: "false" %>
           <%= attendance.hidden_field :worked_status, value: "worked_applying" %>
             <tr>
