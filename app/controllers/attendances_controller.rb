@@ -40,13 +40,22 @@ class AttendancesController < ApplicationController
   def update_one_month
     if attendances_invalid?  #helperメソッド(true or flase)
       attendances = []
-      params[:user][:attendances].each do |id, item|
-        if item[:worked_request_sign].present?
-          item.new(attendances_params)
-          attendances << item
+      params[:user][:attendances].each do |id|
+        Attendance.where(id: id.to_i).each do |attendance|
+          if params[:user][:attendances][id][:worked_request_sign].present?
+            attendance.applying_started_at =  params[:user][:attendances][id][:applying_started_at]
+            attendance.applying_finished_at = params[:user][:attendances][id][:applying_finished_at]
+            attendance.edit_tomorrow = params[:user][:attendances][id][:edit_tomorrow]
+            attendance.edit_note = params[:user][:attendances][id][:edit_note]
+            attendance.worked_request_sign = params[:user][:attendances][id][:worked_request_sign]
+            attendance.worked_change = params[:user][:attendances][id][:worked_change]
+            attendance.worked_status = params[:user][:attendances][id][:worked_status]
+            attendances << attendance
+          end
         end
       end
-      Attendance.import attendances
+      Attendance.import(attendances, on_duplicate_key_update: [:applying_started_at, :applying_finished_at, :edit_tomorrow,
+                                                               :edit_note, :worked_request_sign, :worked_change, :worked_status])
       flash[:success] = "必須項目記入済みの勤怠変更を申請しました。"
       redirect_to user_url(date: params[:date])
     else
