@@ -18,6 +18,13 @@ class ApplicationController < ActionController::Base
       redirect_to login_url
     end
   end
+  
+  def logged_in_new_or_login
+    if logged_in?
+      flash[:danger] = "すでにログインしています。"
+      redirect_to current_user
+    end
+  end
 
   # アクセスしたユーザーが現在ログインしているユーザーか確認します。
   def correct_user
