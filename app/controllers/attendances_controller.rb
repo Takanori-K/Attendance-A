@@ -82,6 +82,7 @@ class AttendancesController < ApplicationController
   end
   
   def edit_overtime_work
+    @first_day = params[:date].to_date
     @day = Date.parse(params[:day])
     @youbi = $days_of_the_week[@day.wday]
     @attendance = @user.attendances.find_by(worked_on: @day)
@@ -94,11 +95,11 @@ class AttendancesController < ApplicationController
     # binding.pry
     if params[:attendance][:scheduled_end_time].blank? || params[:attendance][:instructor_sign].blank? || params[:attendance][:business_description].blank?
       flash[:danger] = "必須箇所が空欄です。"
-      redirect_to user_url(date: @attendance.worked_on)
+      redirect_to user_url(date: params[:date])
     else
       @attendance.update_attributes(overtime_params)
       flash[:success] = "残業申請が完了しました。"
-      redirect_to user_url(date: @attendance.worked_on) and return
+      redirect_to user_url(date: params[:date]) and return
     end
   end
   
@@ -210,7 +211,7 @@ class AttendancesController < ApplicationController
     end
     
     def worked_request2_params
-      params.require(:user).permit(attendances: [:applying_started_at, :applying_finished_at, :worked_status, :worked_change, :edit_note, :edit_tomorrow])[:attendances]
+      params.require(:user).permit(attendances: [:applying_started_at, :applying_finished_at, :worked_status, :worked_change, :edit_note, :edit_tomorrow, :edit_request_sign])[:attendances]
     end
       
     

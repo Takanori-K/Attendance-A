@@ -105,7 +105,7 @@
       <tr>
         <td>
           <% if current_user?(@user) %>
-            <%= link_to "残業申請", edit_overtime_path(@user, params:{day: day.worked_on, youbi: $days_of_the_week[day.worked_on.wday]}), remote: true, class: "btn btn-primary #{"disabled" if Date.current < day.worked_on}" %>
+            <%= link_to "残業申請", edit_overtime_path(@user, date: @first_day, params:{day: day.worked_on, youbi: $days_of_the_week[day.worked_on.wday]}), remote: true, class: "btn btn-primary #{"disabled" if Date.current < day.worked_on}" %>
           <% end %>  
         </td>
         <td><%= l(day.worked_on, format: :short) %></td>
@@ -199,16 +199,12 @@
           <% end %>
           
           
-          <% if (day.worked_applying? && day.worked_change == "true" && day.worked_request_sign.present?) || (day.worked_change == "false" && day.worked_request_sign.present?) %>
+          <% if day.worked_change == "false" && day.worked_request_sign.present? %>
             <span><%= day.worked_request_sign %>へ勤怠編集申請中</span>
-          <% elsif (day.worked_approval? && day.worked_change == "true" && day.worked_request_sign.present?) %>
-            <span><%= day.worked_request_sign %>から勤怠編集承認済み</span>
-          <% elsif day.edit_request_sign.present? && day.worked_request_sign.blank? %>
+          <% elsif day.worked_approval? && day.worked_change == "true" %>
             <span><%= day.edit_request_sign %>から勤怠編集承認済み</span>
-          <% elsif (day.worked_denial? && day.worked_change == "true"  && day.worked_request_sign.present?) %>
-            <span><%= day.worked_request_sign %>から勤怠編集否認</span>
-          <% elsif day.edit_request_sign.blank? && day.worked_request_sign.blank? && day.approval_date.present? %>
-            <span><%= day.denial_request_sign %>から勤怠編集否認</span>
+          <% elsif day.worked_denial? && day.worked_change == "true" %>
+            <span><%= day.edit_request_sign %>から勤怠編集否認</span>
           <% end %>
         </td>
       </tr>

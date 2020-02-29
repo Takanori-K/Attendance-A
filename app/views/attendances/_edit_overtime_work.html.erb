@@ -7,7 +7,7 @@
       <h1 class="modal-title">残業申請</h1>
     </div>
     <div class="modal-body">
-      <%= form_with(model: @attendance, url: update_overtime_path(@user), local: true) do |f| %>
+      <%= form_with(model: @attendance, url: update_overtime_path(@user, date: @first_day), local: true) do |f| %>
         <%= f.hidden_field :id, :value => @attendance.id %> <!-- attendancesテーブルのidを渡す -->
         <%= f.hidden_field :user_id, :value => @user.id %>
         <% if @attendance.approval? && @attendance.overtime_change == "true" %>
