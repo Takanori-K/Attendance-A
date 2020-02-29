@@ -77,7 +77,7 @@ class AttendancesController < ApplicationController
     if params[:search].present?
       @attendances_search = @all_worked_on.where(worked_on: Date.parse("#{params[:search]}-01").all_month).order(:worked_on)
     else
-      @attendances_search = @all_worked_on.where(worked_on: @first_day..@last_day).order(:worked_on)
+      @attendances_search = @attendances
     end
   end
   
