@@ -39,8 +39,20 @@
                   <%= day.approval_finished %>
                 <% end %>  
               </td>
-              <td><%= day.started_at.to_s(:time) %></td>
-              <td><%= day.finished_at.to_s(:time) %></td>
+              <td>
+                <% if day.started_at.present? %>
+                  <%= day.started_at.to_s(:time) %>
+                <% else %>
+                  <%= day.started_at %>
+                <% end %>  
+              </td>
+              <td>
+                <% if day.finished_at.present? %>
+                  <%= day.finished_at.to_s(:time) %>
+                <% else %>
+                  <%= day.finished_at %>
+                <% end %>  
+              </td>
               <td>
                 <% if day.edit_request_sign.present? %>
                   <%= day.edit_request_sign %>
