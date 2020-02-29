@@ -58,7 +58,7 @@
                     <%= attendance.hidden_field :tomorrow, value: at.edit_tomorrow %>
                     <%= attendance.hidden_field :edit_tomorrow, value: at.tomorrow %>
                     <%= attendance.hidden_field :edit_request_sign, value: at.worked_request_sign %>
-                    <%= attendance.hidden_field :approval_date, value: Time.zone.now %>
+                    <%= attendance.hidden_field :approval_date, value: Date.current %>
                       <tr>
                         <td><%= l(at.worked_on, format: :short) %></td>
                         <td>
