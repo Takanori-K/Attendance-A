@@ -165,11 +165,14 @@ class AttendancesController < ApplicationController
   def update_worked_info
     @user = User.find(params[:user_id])
     worked_request_params.each do |id, item|
-      attendance = Attendance.find(id)
-      if params[:user][:attendances][id][:worked_change].present? && (params[:user][:attendances][id][:worked_status] == "worked_approval" || params[:user][:attendances][id][:worked_status] == "worked_denial")
-       
-        attendance.update_attributes!(item)
-        debugger
+      worked_request2_params.each do |id_2, item_2|
+        if (params[:user][:attendances][id][:worked_status] == "worked_approval" && params[:user][:attendances][id][:worked_change] == "true")
+          attendance = Attendance.find(id)
+          attendance.update_attributes!(item)
+        elsif (params[:user][:attendances][id_2][:worked_status] == "worked_denial" && params[:user][:attendances][id_2][:worked_change] == "true")
+          attendance_2 = Attendance.find(id_2)
+          attendance_2.update_attributes!(item_2)
+        end
       end
     end
       flash[:success] = "変更にチェック済みの勤怠変更を送信しました。"
@@ -203,8 +206,13 @@ class AttendancesController < ApplicationController
     end
     
     def worked_request_params
-      params.require(:user).permit(attendances: [:approval_started, :approval_finished, :denial_started, :denial_finished, :worked_status, :worked_change, :approval_date])[:attendances]
+      params.require(:user).permit(attendances: [:started_at, :finished_at, :approval_started, :approval_finished, :worked_status, :worked_change, :approval_date, :note, :tomorrow])[:attendances]
     end
+    
+    def worked_request2_params
+      params.require(:user).permit(attendances: [:applying_started_at, :applying_finished_at, :worked_status, :worked_change, :edit_note, :edit_tomorrow])[:attendances]
+    end
+      
     
      def admin_or_correct_user
        @user = User.find(params[:user_id]) if @user.blank?

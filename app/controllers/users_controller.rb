@@ -62,7 +62,7 @@ class UsersController < ApplicationController
     @month_count = Attendance.where(one_month_sign: current_user.name).where(month_change: ["true", "false"]).where(month_status: 0).count
     @month_2_count = Attendance.where(one_month_sign: current_user.name).where(month_change: "false").where(month_status: [1, 2]).count
     
-    @worked_request = Attendance.where(worked_request_sign: current_user.name).where(worked_change: ["true", "false"]).where(worked_status: 0)
+    @worked_request = Attendance.where(worked_request_sign: current_user.name).where(worked_change: "false").where(worked_status: 0)
     @worked_request_2 = Attendance.where(worked_request_sign: current_user.name).where(worked_change: "false").where(worked_status: [1, 2])
     
     @worked_count = Attendance.where(worked_request_sign: current_user.name).where(worked_change: ["true", "false"]).where(worked_status: 0).count

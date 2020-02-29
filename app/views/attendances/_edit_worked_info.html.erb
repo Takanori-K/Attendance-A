@@ -12,8 +12,7 @@
       <% count = 0 %>
       <% @users.each do |user| %>
       <% count = 1 %>
-        <% attendances = Attendance.where(user_id: user.id, worked_request_sign: current_user.name, worked_change: "false").
-                         or(Attendance.where(user_id: user.id, worked_request_sign: current_user.name, worked_change: "true", worked_status: 0)).order(:worked_on) %>
+        <% attendances = Attendance.where(user_id: user.id, worked_request_sign: current_user.name, worked_change: "false").order(:worked_on) %>
           <% if attendances.present? && count == 1 %>
             <h3 class="modal-title">【<%= user.name %>からの勤怠変更申請】</h3>
               <table class="table table-striped table-bordered table-condensed" id ="table-attendances">
@@ -48,8 +47,16 @@
                 <tbody>
                   <% attendances.each do |at| %>
                     <%= f.fields_for "attendances[]", at do |attendance| %>
-                    <%= attendance.hidden_field :approval_started, value: at.applying_started_at %>
-                    <%= attendance.hidden_field :approval_finished, value: at.applying_finished_at %>
+                    <%= attendance.hidden_field :started_at, value: at.applying_started_at %>
+                    <%= attendance.hidden_field :finished_at, value: at.applying_finished_at %>
+                    <%= attendance.hidden_field :applying_started_at, value: at.started_at %>
+                    <%= attendance.hidden_field :applying_finished_at, value: at.finished_at %>
+                    <%= attendance.hidden_field :approval_started, value: at.started_at %>
+                    <%= attendance.hidden_field :approval_finished, value: at.finished_at %>
+                    <%= attendance.hidden_field :edit_note, value: at.note %>
+                    <%= attendance.hidden_field :note, value: at.edit_note %>
+                    <%= attendance.hidden_field :tomorrow, value: at.edit_tomorrow %>
+                    <%= attendance.hidden_field :edit_tomorrow, value: at.tomorrow %>
                     <%= attendance.hidden_field :approval_date, value: Time.zone.now %>
                       <tr>
                         <td><%= l(at.worked_on, format: :short) %></td>
