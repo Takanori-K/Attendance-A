@@ -19,7 +19,7 @@ gem 'turbolinks',   '~> 5'
 gem 'jbuilder',     '~> 2.5'
 
 group :development, :test do
-  gem 'sqlite3'
+  gem 'sqlite3', '~> 1.4.0'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
 
