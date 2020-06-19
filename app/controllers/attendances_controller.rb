@@ -3,7 +3,6 @@ class AttendancesController < ApplicationController
   before_action :set_user,       only: [:edit_one_month, :update_one_month, :edit_overtime_work, :update_overtime_work, :update_one_month_info, :worked_log]
   before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overtime_work, :update_overtime_work]
   before_action :correct_user,   only: [:edit_one_month, :update_one_month, :edit_overtime_work, :update_overtime_work, :worked_log]
-  #before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :set_one_month,  only: [:edit_one_month,:update_one_month_info, :worked_log]
   before_action :superior_user, only: [:edit_overtime_work_info, :edit_month_work_info, :update_month_work_info, :edit_worked_info, :update_worked_info]
   before_action :admin_user_show_edit_one_month, only: :edit_one_month
@@ -56,18 +55,6 @@ class AttendancesController < ApplicationController
       end
       Attendance.import attendances, on_duplicate_key_update:[:started_at, :finished_at, :applying_started_at, :applying_finished_at, :denial_started, :denial_finished, :note, :edit_note, :tomorrow, :edit_tomorrow, 
                                                               :worked_request_sign, :edit_request_sign, :denial_request_sign, :worked_status, :worked_change]
-                                                                
-      
-      
-      
-      
-      
-      #attendances_params.each do |id, item|
-        #attendance = Attendance.find(id)
-        #if params[:user][:attendances][id][:worked_request_sign].present?
-          #attendance.update_attributes(item)
-        #end
-      #end
       
       flash[:success] = "必須項目記入済みの勤怠変更を申請しました。"
       redirect_to user_url(date: params[:date])
@@ -218,14 +205,5 @@ class AttendancesController < ApplicationController
     def worked_request2_params
       params.require(:user).permit(attendances: [:applying_started_at, :applying_finished_at, :worked_status, :worked_change, :edit_note, :edit_tomorrow, :edit_request_sign])[:attendances]
     end
-      
-    
-     def admin_or_correct_user
-       @user = User.find(params[:user_id]) if @user.blank?
-       unless current_user?(@user) || current_user.admin?
-        flash[:danger] = "編集権限がありません。"
-        redirect_to(root_url)
-       end
-     end
      
 end
